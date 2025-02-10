@@ -1,50 +1,60 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+#  BIDA CLUBS | Billiards scoring app
+### Released versions: ...
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+--------------------------------------------------
+## Table of Contents
+- [Description](#description)
+- [Technology](#technology)
+- [Documentation](#documentation)
+- [How can get started](#how-can-get-started)
+- [License & Copyright](#license--copyright)
+--------------------------------------------------
+## Description
 
-## Expanding the ESLint configuration
+ - Billiards scoring app: provide a more convenient way of tracking scores based on the rules of the game, store match history, manage customer information, etc.
+Integrate with the management system: The app can be integrated with the chain's management system to synchronize data and manage tables and stores.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+ - The system supports feature combos for 3 actors: STAFF, ADMIN, GUEST, MEMBER
 
-- Configure the top-level `parserOptions` property like this:
+## Technology
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Front-end:** 
+	- React
+	- tailwing
+	- MUI (Material-ui)
+- **Mobile:** 
+	- React Native
+- **Back-end:** 
+	- NodeJS
+	- MongoDB
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Documentation
+- [Billiards scoring app | SRS](link)
+- [Billiards scoring app | Technical Requirements](link)
+- [Billiards scoring app | Report_Mapping](link)
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+-   **Download/Clone the source code.**
+- **Database**: ().
+- **Code | Build & Run**
+	- **Front-end**:
+ 		-   - Customize the information in  [FrontEnd file](https://github.com/quocthink19/JEWELRY_STORE/tree/Payment)
+		-   **To run, let's run "`npm start`" in the command line.**
+		-   *You also can get more at [https://create-react-app.dev/docs/getting-started/](https://create-react-app.dev/docs/getting-started/).*
+	- **Back-end**:
+		- Customize the information in  [application.properties](https://github.com/quocthink19/JEWELRY_STORE/blob/BACKEND/src/main/java/com/jewelry_store/jewelry_store/JewelryStoreApplication.java)  in src/main/java/com/jewelry_store/jewelry_store/JewelryStoreApplication.java for adapting to your case.
+		- Run [Jewelry_Store.Java]() to get started.
+  - 
+- **Already accounts** to login to the system:
+
+	| Username | Password  | Role     |
+	|----------|---------- |----------|
+	| tri      | Anhtri123 | MANAGER  |
+	| tri1     | Anhtri123 | STAFF    |
+	| tri2     | Anhtri123 | GUEST    |
+        | tri3     | Anhtri123 | MEMBER   |
+	
+
+> 🤟 Hope to pass SWD 🤟
