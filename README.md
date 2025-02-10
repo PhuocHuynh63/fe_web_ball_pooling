@@ -1,7 +1,7 @@
 
 
 #  BIDA CLUBS | Billiards scoring app
-### Released versions: ...
+### Released versions: [ballpooling.vercel.app](https://ballpooling.vercel.app/)
 
 --------------------------------------------------
 ## Table of Contents
