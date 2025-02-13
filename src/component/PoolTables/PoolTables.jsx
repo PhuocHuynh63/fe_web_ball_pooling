@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Card, CardContent, Typography } from "@mui/material";
+import "./PoolTables.css"; // Import the CSS file for styling
 
 const PoolTables = () => {
   const [poolTables, setPoolTables] = useState([
@@ -28,19 +29,21 @@ const PoolTables = () => {
       <Typography variant="h4" gutterBottom>
         Available Pool Tables
       </Typography>
-      {poolTables.length > 0 ? (
-        poolTables.map((table) => (
-          <Card key={table.id} sx={{ marginBottom: 2 }}>
-            <CardContent>
-              <Typography variant="h5">{table.name}</Typography>
-              <Typography color="textSecondary">{table.description}</Typography>
-              <Typography variant="body2">Price: ${table.price}</Typography>
-            </CardContent>
-          </Card>
-        ))
-      ) : (
-        <Typography>No pool tables available at the moment.</Typography>
-      )}
+      <Box className="pool-tables-grid">
+        {poolTables.length > 0 ? (
+          poolTables.map((table) => (
+            <Card key={table.id} className="pool-table-card">
+              <CardContent>
+                <Typography variant="h5">{table.name}</Typography>
+                <Typography color="textSecondary">{table.description}</Typography>
+                <Typography variant="body2">Price: ${table.price}</Typography>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <Typography>No pool tables available at the moment.</Typography>
+        )}
+      </Box>
     </Box>
   );
 };
