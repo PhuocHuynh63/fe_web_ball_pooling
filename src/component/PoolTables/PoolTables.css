@@ -13,6 +13,7 @@
 }
 
 .pool-table-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -24,4 +25,22 @@
 
 .pool-table-card:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+}
+
+.status-label.available {
+  background-color: green;
+}
+
+.status-label.in-use {
+  background-color: red;
 }

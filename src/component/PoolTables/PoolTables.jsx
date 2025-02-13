@@ -9,18 +9,21 @@ const PoolTables = () => {
       name: "Classic Pool Table",
       description: "A classic pool table with a sleek design.",
       price: 500,
+      status: "available", // Status of the pool table
     },
     {
       id: 2,
       name: "Modern Pool Table",
       description: "A modern pool table with advanced features.",
       price: 800,
+      status: "in use", // Status of the pool table
     },
     {
       id: 3,
       name: "Luxury Pool Table",
       description: "A luxury pool table with premium materials.",
       price: 1200,
+      status: "available", // Status of the pool table
     },
   ]);
 
@@ -34,6 +37,12 @@ const PoolTables = () => {
           poolTables.map((table) => (
             <Card key={table.id} className="pool-table-card">
               <CardContent>
+                <Typography
+                  variant="body2"
+                  className={`status-label ${table.status === "available" ? "available" : "in-use"}`}
+                >
+                  {table.status}
+                </Typography>
                 <Typography variant="h5">{table.name}</Typography>
                 <Typography color="textSecondary">{table.description}</Typography>
                 <Typography variant="body2">Price: ${table.price}</Typography>
