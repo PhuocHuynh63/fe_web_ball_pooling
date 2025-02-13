@@ -9,6 +9,7 @@ import { styled } from '@mui/system';
 import BlockIcon from '@mui/icons-material/Block';
 import logo from '../../assets/logo.png';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
+
 const menu = [
     { title: "Home", icon: <Home />, path: "/" },
     { title: "Dashboard", icon: <Dashboard />, path: "/dashboard" },
@@ -20,9 +21,9 @@ const menu = [
 const Logo = styled("img")({
     height: 300, 
     width: 300, 
-    backgroundColor: "#003366",
+    // Remove background color
   });
-  
+
 const AdminSidebar = () => {
     const isSmallScreen = useMediaQuery("(max-width:1080px)");
     const navigate = useNavigate();
@@ -95,21 +96,23 @@ const AdminSidebar = () => {
                                 key={i}
                                 onClick={() => handleNavigate(item)}
                                 sx={{
+                                    backgroundColor: "#9391ff", // Highlight color
                                     '&:hover': {
-                                        backgroundColor:"#91BAFF",
+                                        backgroundColor: "#003366", // Darker highlight on hover
                                     },
                                     transition: 'all 0.3s',
                                     mb: 1,
+                                    borderRadius: '8px', // Rounded corners
                                 }}
                             >
-                                <ListItemIcon sx={{color: "#003366"}}>
+                                <ListItemIcon sx={{color: "white"}}>
                                     {item.icon}
                                 </ListItemIcon>
                                 <ListItemText
                                     primary={
                                         <Typography
                                             variant="subtitle1"
-                                            sx={{ fontWeight: 'bold',color: "#003366" }}
+                                            sx={{ fontWeight: 'bold', color: "#111111" }}
                                         >
                                             {item.title}
                                         </Typography>
