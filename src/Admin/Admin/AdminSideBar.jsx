@@ -69,7 +69,7 @@ const AdminSidebar = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        backgroundColor: "#FFFFF",
+                        backgroundColor: "#4CAF50", // Change to green
                         color: 'white',
                         p: 2,
                     }}
