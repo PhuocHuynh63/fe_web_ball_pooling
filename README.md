@@ -1,6 +1,6 @@
 
 
-#  BIDA CLUBS | Billiards scoring app
+#  Billiards CLUBS | Billiards scoring app
 ### Released versions: [https://billiard-delta.vercel.app/](https://billiard-delta.vercel.app//)
 
 --------------------------------------------------
