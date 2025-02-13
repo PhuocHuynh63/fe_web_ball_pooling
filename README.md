@@ -1,7 +1,7 @@
 
 
 #  BIDA CLUBS | Billiards scoring app
-### Released versions: [https://fe-billiard.vercel.app/](https://fe-billiard.vercel.app/)
+### Released versions: [https://billard-club.vercel.app/](https://billard-club.vercel.app/)
 
 --------------------------------------------------
 ## Table of Contents
