@@ -56,7 +56,7 @@ const HomePage = () => {
                   animation: 'typing 18s steps(10, end) infinite'
                 }}
               >
-                <strong>Welcome to Our Bida Club</strong>
+                <strong>Welcome to Our Billiard Club</strong>
               </Typography>
             </div>
           ))}

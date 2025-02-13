@@ -303,7 +303,7 @@ const Dashboard = () => {
       </Grid>
 
       <Typography variant="h4" sx={{ mt: 4, color: "#3f51b5" }}>
-        Order & Buyback Summary
+        Tables & Customers
       </Typography>
       <div style={{ marginTop: "20px" }}>
         <ResponsiveContainer width="100%" height={400}>
@@ -323,7 +323,7 @@ const Dashboard = () => {
       </div>
 
       <Typography variant="h4" sx={{ mt: 4, color: "#3f51b5" }}>
-        Statistics by Area
+        Statistics by type Table
       </Typography>
       <div
         style={{
@@ -414,14 +414,14 @@ const Dashboard = () => {
 
       <div>
         <Typography variant="h4" sx={{ mt: 4, color: "#3f51b5" }}>
-          Top Product
+          Top Customers
         </Typography>
         <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Product</TableCell>
-                <TableCell align="Center">Jewelry Code</TableCell>
+                <TableCell>Customer</TableCell>
+                <TableCell align="Center">Email</TableCell>
                 <TableCell align="Center">Total</TableCell>
               </TableRow>
             </TableHead>

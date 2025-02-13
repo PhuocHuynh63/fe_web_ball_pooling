@@ -80,27 +80,6 @@ const Home = () => {
       <div className="pb-10">
         <Navbar />
         <div className="black-separator"></div> {/* Black line separator */}
-        <section
-          className="banner -z-50 relative flex flex-col justify-center items-center"
-          style={{
-            backgroundImage: `url(${images[currentImageIndex]})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="w-[50vw] z-10 text-center image-border">
-            <p
-              className={`text-7xl lg:text-9xl font-bold z-10 py-5 ${themes[currentImageIndex].textColor}`}
-            >
-              {themes[currentImageIndex].title}
-            </p>
-            <p className="z-10 text-white text-xl lg:text-4xl">
-              {themes[currentImageIndex].subtitle}
-            </p>
-          </div>
-          <div className="cover absolute top-0 left-0 right-0"></div>
-          <div className="fadout"></div>
-        </section>
         <div className="separator"></div> {/* New line separator */}
         <section className="top-product-section p-10 lg:py-10 lg:px-20">
           <p className="header-blue">Top Product</p>
@@ -146,7 +125,7 @@ const Home = () => {
                     )}
                 </div>
             </section> */}
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </div>
   );
