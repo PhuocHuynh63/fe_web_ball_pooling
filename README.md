@@ -1,7 +1,7 @@
 
 
 #  BIDA CLUBS | Billiards scoring app
-### Released versions: [ballpooling.vercel.app](https://ballpooling.vercel.app/)
+### Released versions: [https://fe-billiard.vercel.app/](https://fe-billiard.vercel.app/)
 
 --------------------------------------------------
 ## Table of Contents
@@ -54,7 +54,7 @@ Integrate with the management system: The app can be integrated with the chain's
 	| tri      | Anhtri123 | MANAGER  |
 	| tri1     | Anhtri123 | STAFF    |
 	| tri2     | Anhtri123 | GUEST    |
-    | tri3     | Anhtri123 | MEMBER   |
+        | tri3     | Anhtri123 | MEMBER   |
 	
 
 > 🤟 Hope to pass SWD 🤟
