@@ -54,7 +54,7 @@ Integrate with the management system: The app can be integrated with the chain's
 	| tri      | Anhtri123 | MANAGER  |
 	| tri1     | Anhtri123 | STAFF    |
 	| tri2     | Anhtri123 | GUEST    |
-        | tri3     | Anhtri123 | MEMBER   |
+    | tri3     | Anhtri123 | MEMBER   |
 	
 
 > 🤟 Hope to pass SWD 🤟
