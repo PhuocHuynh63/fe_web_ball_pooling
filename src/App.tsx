@@ -17,29 +17,39 @@ import Images from "./pages/UiElements/Images";
 import Videos from "./pages/UiElements/Videos";
 import UserProfiles from "./pages/UserProfiles";
 import Users from "./pages/Users"; // Import Users page
+import Guest from "./pages/Guest"; // Import Guest page
+import GuestLayout from "./layout/GuestLayout";
 
 export default function App() {
   return (
     <>
       <Router>
         <Routes>
-          {/* Dashboard Layout */}
+          {/* Admin route */}
           <Route element={<AppLayout />}>
-            <Route index path="/" element={<BasicTables />} />
+            {/* <Route index path="/" element={<BasicTables />} /> */}
             <Route path="/dashboard" element={<Ecommerce />} />
-            {/* Others Page */}
+            <Route path="/users" element={<Users />} />
+            <Route path="/tables" element={<BasicTables />} />
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/calendar" element={<Calendar />} />
-            <Route path="/blank" element={<Blank />} />
-            <Route path="/users" element={<Users />} /> {/* Add Users route */}
+            
+          {/* Auth Layout */}
+          <Route element={<AuthLayout />}>
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Route>
 
-            {/* Forms */}
+          {/* Guest Route */}
+          <Route element={<GuestLayout />}></Route>
+           <Route path="/" element={<Guest />} />
+
+          {/* Forms */}
             <Route path="/form-elements" element={<FormElements />} />
 
-            {/* Tables */}
-            <Route path="/tables" element={<BasicTables />} />
-
-            {/* Ui Elements */}
+          {/* Ui Elements */}
+            <Route path="/blank" element={<Blank />} />
+            
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/avatars" element={<Avatars />} />
             <Route path="/badges" element={<Badges />} />
@@ -48,14 +58,9 @@ export default function App() {
             <Route path="/videos" element={<Videos />} />
           </Route>
 
-          {/* Auth Layout */}
-          <Route element={<AuthLayout />}>
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-          </Route>
-
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
+
         </Routes>
       </Router>
     </>
