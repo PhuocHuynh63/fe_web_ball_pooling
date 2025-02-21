@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import GridShape from "../../components/common/GridShape";
 import Input from "../../components/form/input/InputField";
@@ -7,6 +7,8 @@ import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Checkbox from "../../components/form/input/Checkbox";
 import Button from "../../components/ui/button/Button";
 import PageMeta from "../../components/common/PageMeta";
+import { auth } from "../../config/firebase";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 declare global {
   interface Window {
@@ -18,26 +20,16 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-  useEffect(() => {
-    // Initialize Google Sign-In button
-    window.google.accounts.id.initialize({
-      client_id: "YOUR_GOOGLE_CLIENT_ID",
-      callback: handleGoogleSignIn,
-    });
-    window.google.accounts.id.renderButton(
-      document.getElementById("google-signin-button"),
-      { theme: "filled_black", size: "large" } // Use "filled_black" for dark theme
-    );
-  }, []);
-
-  interface GoogleSignInResponse {
-    credential: string;
-    select_by: string;
-  }
-
-  const handleGoogleSignIn = (response: GoogleSignInResponse) => {
-    console.log("Google Sign-In response:", response);
-    // Handle the sign-in response, e.g., send the token to your server
+  const handleGoogleSignIn = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      console.log("Google Sign-In successful:", result.user);
+      // Handle successful sign-in (e.g., redirect to dashboard)
+    } catch (error) {
+      console.error("Google Sign-In error:", error);
+      // Handle error (show error message to user)
+    }
   };
 
   return (
@@ -69,7 +61,14 @@ export default function SignIn() {
               </div>
               <div>
                 <div className="flex justify-center mb-5">
-                  <div id="google-signin-button"></div>
+                  <Button
+                    onClick={handleGoogleSignIn}
+                    className="w-full flex items-center justify-center gap-2"
+                    variant="outline"
+                  >
+                    <img src="/images/google.svg" alt="Google" className="w-5 h-5" />
+                    Sign in with Google
+                  </Button>
                 </div>
                 <div className="relative py-3 sm:py-5">
                   <div className="absolute inset-0 flex items-center">
