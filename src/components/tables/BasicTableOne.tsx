@@ -13,6 +13,10 @@ interface BilliardTable {
   duration: string;
 }
 
+interface BasicTableOneProps {
+  onTableClick: (tableId: number) => void;
+}
+
 // Define the table data using the interface
 const tableData: BilliardTable[] = [
   {
@@ -72,13 +76,14 @@ const tableData: BilliardTable[] = [
   },
 ];
 
-export default function BasicTableOne() {
+export default function BasicTableOne({ onTableClick }: BasicTableOneProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {tableData.map((table) => (
         <div
           key={table.id}
-          className="relative p-4 border border-gray-200 rounded-lg bg-white dark:border-white/[0.05] dark:bg-white/[0.03] flex flex-col justify-between"
+          onClick={() => onTableClick(table.id)}
+          className="relative p-4 border border-gray-200 rounded-lg bg-white dark:border-white/[0.05] dark:bg-white/[0.03] flex flex-col justify-between cursor-pointer hover:shadow-lg transition-all duration-300 hover:border-gray-300 dark:hover:border-white/[0.1]"
         >
           <div className="absolute top-2 right-2">
             <Badge

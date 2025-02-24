@@ -1,12 +1,12 @@
 import React from "react";
-import BasicTables from './Tables/BasicTables';
+import BasicTables from "./Tables/BasicTables";
 
-const BilliardTables: React.FC = () => {
+const Guest: React.FC = () => {
   return (
     <div>
-      <BasicTables/>
+      <BasicTables />
     </div>
   );
 };
 
-export default BilliardTables;
+export default Guest;

@@ -19,6 +19,9 @@ import Videos from "./pages/UiElements/Videos";
 import UserProfiles from "./pages/UserProfiles";
 import Users from "./pages/Users";
 import Guest from "./pages/Guest";
+import WaitingRoom from "./pages/Game/WaitingRoom";
+import Setting from "./pages/Game/Setting";
+import Scoreboard from "./pages/Game/Scoreboard";
 
 
 export default function App() {
@@ -28,7 +31,7 @@ export default function App() {
         <Routes>
           {/* Admin route */}
           <Route element={<AppLayout />}>
-            <Route index path="/" element={<BasicTables />} />
+            {/* <Route index path="/" element={<BasicTables />} /> */}
             <Route path="/dashboard" element={<Ecommerce />} />
             <Route path="/users" element={<Users />} />
             <Route path="/tables" element={<BasicTables />} />
@@ -58,7 +61,10 @@ export default function App() {
           </Route>
 
           {/* Guest Layout */}
-           <Route path="/Guest" element={<Guest />} />
+           <Route path="/" element={<Guest />} />
+           <Route path="/waiting-room/:tableId" element={<WaitingRoom />} />
+           <Route path="/setting" element={<Setting />} />
+           <Route path="/Scoreboard" element={<Scoreboard />} />
            
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
