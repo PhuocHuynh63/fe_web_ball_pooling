@@ -61,10 +61,10 @@ export default function App() {
           </Route>
 
           {/* Guest Layout */}
-           <Route path="/" element={<Guest />} />
-           <Route path="/waiting-room/:tableId" element={<WaitingRoom />} />
-           <Route path="/setting" element={<Setting />} />
-           <Route path="/Scoreboard" element={<Scoreboard />} />
+            <Route path="/" element={<Guest />} />
+            <Route path="/waiting-room/:tableId" element={<WaitingRoom />} />
+            <Route path="/setting" element={<Setting />} />
+            <Route path="/Scoreboard" element={<Scoreboard />} />
            
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />

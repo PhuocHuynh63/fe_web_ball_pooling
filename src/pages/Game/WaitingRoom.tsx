@@ -25,7 +25,7 @@ const WaitingRoom = () => {
   };
 
   const handleStartMatch = () => {
-    navigate(`/scoreboard/${tableId}`);
+    navigate("/scoreboard");
   };
 
   const handleBackToTables = () => {
@@ -45,7 +45,11 @@ const WaitingRoom = () => {
       <div className="w-80 bg-gray-400 p-4 rounded-lg shadow-lg">
         <h2 className="text-white text-2xl font-bold text-center mb-4">WAITING ROOM - Table {tableId}</h2>
         <div className="bg-black text-white p-2 text-center font-bold rounded-t-lg">PLAYERS</div>
-        <WaitingRoomTable players={players} />
+        <WaitingRoomTable players={players} onDeletePlayer={(index) => {
+          const updatedPlayers = players.filter((_, i) => i !== index);
+          setPlayers(updatedPlayers);
+          localStorage.setItem(`table-${tableId}`, JSON.stringify(updatedPlayers));
+        }} />
         <button
           className="mt-4 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-800"
           onClick={handleAddPlayer}
