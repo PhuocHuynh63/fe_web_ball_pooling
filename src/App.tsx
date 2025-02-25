@@ -3,7 +3,6 @@ import AppLayout from "./layout/AppLayout";
 import AuthLayout from "./layout/AuthLayout";
 import GuestLayout from "./layout/GuestLayout";
 import SignIn from "./pages/AuthPages/SignIn";
-import SignUp from "./pages/AuthPages/SignUp";
 import Blank from "./pages/Blank";
 import Calendar from "./pages/Calendar";
 import Ecommerce from "./pages/Dashboard/ECommerce";
@@ -31,7 +30,7 @@ export default function App() {
         <Routes>
           {/* Admin route */}
           <Route element={<AppLayout />}>
-            {/* <Route index path="/" element={<BasicTables />} /> */}
+            <Route index path="/" element={<BasicTables />} />
             <Route path="/dashboard" element={<Ecommerce />} />
             <Route path="/users" element={<Users />} />
             <Route path="/tables" element={<BasicTables />} />
@@ -57,11 +56,10 @@ export default function App() {
           {/* Auth Layout */}
           <Route element={<AuthLayout />}>
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
           </Route>
 
           {/* Guest Layout */}
-            <Route path="/" element={<Guest />} />
+            <Route path="/1" element={<Guest />} />
             <Route path="/waiting-room/:tableId" element={<WaitingRoom />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/Scoreboard" element={<Scoreboard />} />
