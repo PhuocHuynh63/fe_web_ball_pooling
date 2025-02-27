@@ -36,11 +36,7 @@ const navItems: NavItem[] = [
     name: "User Profile",
     path: "/profile",
   },
-  {
-    name: "Forms",
-    icon: <ListIcon />,
-    subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
-  },
+
   {
     name: "Tables",
     icon: <TableIcon />,
@@ -147,7 +143,7 @@ const AppSidebar: React.FC = () => {
                 {nav.icon}
               </span>
               {(isExpanded || isHovered || isMobileOpen) && (
-                <span className="menu-item-text">{nav.name}</span>
+                <span className="menu-item-text text-lg">{nav.name}</span>
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
                 <ChevronDownIcon
@@ -178,7 +174,7 @@ const AppSidebar: React.FC = () => {
                   {nav.icon}
                 </span>
                 {(isExpanded || isHovered || isMobileOpen) && (
-                  <span className="menu-item-text">{nav.name}</span>
+                  <span className="menu-item-text text-lg">{nav.name}</span>
                 )}
               </Link>
             )
@@ -259,9 +255,7 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`py-8 flex ${
-          !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-        }`}
+        className={`py-8 flex justify-center`}
       >
         <Link to="/">
           {isExpanded || isHovered || isMobileOpen ? (
@@ -270,23 +264,23 @@ const AppSidebar: React.FC = () => {
                 className="dark:hidden"
                 src="/images/logo/logo.svg"
                 alt="Logo"
-                width={150}
-                height={40}
+                width={200} // Increased width
+                height={60} // Increased height
               />
               <img
                 className="hidden dark:block"
                 src="/images/logo/logo-dark.svg"
                 alt="Logo"
-                width={150}
-                height={40}
+                width={200} // Increased width
+                height={60} // Increased height
               />
             </>
           ) : (
             <img
               src="/images/logo/logo-icon.svg"
               alt="Logo"
-              width={32}
-              height={32}
+              width={48} // Increased width
+              height={48} // Increased height
             />
           )}
         </Link>

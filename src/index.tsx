@@ -10,6 +10,8 @@ import App from "./App";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AppWrapper } from "./components/common/PageMeta";
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { AuthContextProvider } from "./context/AuthContext";
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -18,9 +20,11 @@ root.render(
   <React.StrictMode>
     <AppWrapper>
       <ThemeProvider>
-        <GoogleOAuthProvider clientId="942310409525-d8257ve8p1v4pe5s2mnn5duppdadhiaj.apps.googleusercontent.com">
-          <App />
-        </GoogleOAuthProvider>
+      <AuthContextProvider>
+        <App />
+        </AuthContextProvider>
+        {/* <GoogleOAuthProvider clientId="942310409525-d8257ve8p1v4pe5s2mnn5duppdadhiaj.apps.googleusercontent.com">
+        </GoogleOAuthProvider> */}
       </ThemeProvider>
     </AppWrapper>
   </React.StrictMode>

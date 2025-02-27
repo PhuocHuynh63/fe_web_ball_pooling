@@ -21,11 +21,13 @@ You'll need to install Node.js >=v14.16+ (Recommended Version) (NPM comes along 
 
 - Then run : <code>npm run dev</code>
 
+- More optional : <code>npm install @react-oauth/google@latest</code>
+
 - More optional : <code>npm install firebase</code>
 
 - More optional : <code>npm install jwt-decode</code>
 
-- More optional : <code>npm install @react-oauth/google@latest</code>
+- More optional : <code>npm install @emotion/react @emotion/styled sass</code>
 
 Now, in the browser go to <code>localhost:3000</code>
 

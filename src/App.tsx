@@ -1,26 +1,25 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router";
 import AppLayout from "./layout/AppLayout";
 import AuthLayout from "./layout/AuthLayout";
-import GuestLayout from "./layout/GuestLayout";
-import SignIn from "./pages/AuthPages/SignIn";
+import SignIn from "./pages/AuthPages/AuthFirebase";
 import Blank from "./pages/Blank";
-import Calendar from "./pages/Calendar";
 import Ecommerce from "./pages/Dashboard/ECommerce";
-import FormElements from "./pages/Forms/FormElements";
 import NotFound from "./pages/OtherPage/NotFound";
 import BasicTables from "./pages/Tables/BasicTables";
+import UserProfiles from "./pages/UserProfiles";
+import Users from "./pages/Users";
+import Register from "./components/Auth_Firebase/register";
+import Guest from "./pages/Guest";
+import WaitingRoom from "./pages/Game/WaitingRoom";
+import Setting from "./pages/Game/Setting";
+import Scoreboard from "./pages/Game/Scoreboard";
+
 import Alerts from "./pages/UiElements/Alerts";
 import Avatars from "./pages/UiElements/Avatars";
 import Badges from "./pages/UiElements/Badges";
 import Buttons from "./pages/UiElements/Buttons";
 import Images from "./pages/UiElements/Images";
 import Videos from "./pages/UiElements/Videos";
-import UserProfiles from "./pages/UserProfiles";
-import Users from "./pages/Users";
-import Guest from "./pages/Guest";
-import WaitingRoom from "./pages/Game/WaitingRoom";
-import Setting from "./pages/Game/Setting";
-import Scoreboard from "./pages/Game/Scoreboard";
 
 
 export default function App() {
@@ -34,13 +33,8 @@ export default function App() {
             <Route path="/dashboard" element={<Ecommerce />} />
             <Route path="/users" element={<Users />} />
             <Route path="/tables" element={<BasicTables />} />
-            <Route path="/profile" element={<UserProfiles />} />
-
-            
-          
-
-          {/* Forms */}
-            <Route path="/form-elements" element={<FormElements />} />
+            <Route path="/users/profile" element={<UserProfiles />} />
+            <Route path="/users/new" element={<Register />} />
 
           {/* Ui Elements */}
             <Route path="/blank" element={<Blank />} />
