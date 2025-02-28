@@ -225,12 +225,6 @@ const BilliardScoreboard: React.FC = () => {
             </h2>
             <button
               className="bg-gray-800 text-white px-4 py-2 rounded m-2"
-              onClick={handleNewGame}
-            >
-              New Game
-            </button>
-            <button
-              className="bg-gray-800 text-white px-4 py-2 rounded m-2"
               onClick={handleQuit}
             >
               Quit
