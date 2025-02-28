@@ -1,11 +1,11 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import { auth } from "../../components/Auth_Firebase/firebase";
 import { toast } from "react-toastify";
 import { Link } from "react-router";
 import GridShape from "../../components/common/GridShape";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Checkbox from "../../components/form/input/Checkbox";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../components/Auth_Firebase/firebase";
 import SignInwithGoogle from "../../components/Auth_Firebase/signInWIthGoogle";
 
 function Login() {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import WaitingRoomTable from "../../components/Waiting/WaitingRoomTable";
+import WaitingRoomTable from "../../components/Game/WaitingRoomTable";
 
-const WaitingRoom = () => {
+const WaitingRoom: React.FC = () => {
   const { tableId } = useParams<{ tableId: string }>();
   const [players, setPlayers] = useState<string[]>([]);
   const navigate = useNavigate();
@@ -13,11 +13,9 @@ const WaitingRoom = () => {
     setPlayers(existingPlayers);
   }, [tableId]);
 
-  const handleAddPlayer = () => {
-    const newPlayer = `Player ${players.length + 1}`;
-    const updatedPlayers = [...players, newPlayer];
-    setPlayers(updatedPlayers);
-    localStorage.setItem(`table-${tableId}`, JSON.stringify(updatedPlayers));
+  const handleAddPlayer = (bidaTableId: string) => {
+    localStorage.setItem("bidaTableId", bidaTableId);
+    navigate("/qrCode");
   };
 
   const handleSettingMatch = () => {
@@ -52,7 +50,7 @@ const WaitingRoom = () => {
         }} />
         <button
           className="mt-4 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-800"
-          onClick={handleAddPlayer}
+          onClick={() => tableId && handleAddPlayer(tableId)}
         >
           Invite player
         </button>

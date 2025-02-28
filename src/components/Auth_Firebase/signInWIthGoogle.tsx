@@ -11,18 +11,23 @@ function SignInwithGoogle() {
       const user = result.user;
       
       if (user) {
+        const displayName = user.displayName || "";
+        const [firstName, ...lastNameParts] = displayName.split(" ");
+        const lastName = lastNameParts.join(" ");
+        const username = `${firstName} ${lastName}`;
+
         await setDoc(doc(db, "Users", user.uid), {
           email: user.email,
-          firstName: user.displayName || "",
+          username: username,
           photo: user.photoURL || "",
-          lastName: "",
+          role: "member",
         });
         
         toast.success("User logged in Successfully", {
           position: "top-center",
         });
         
-        window.location.href = "/profile";
+        window.location.href = "/";
       }
     } catch (error) {
       console.error("Google login error: ", error);

@@ -6,6 +6,7 @@ import {
   CalenderIcon,
   ChevronDownIcon,
   GridIcon,
+  GroupIcon,
   HorizontaLDots,
   ListIcon,
   PageIcon,
@@ -16,6 +17,7 @@ import {
   UserIcon,
 } from "../icons";
 import SidebarWidget from "./SidebarWidget";
+import { PlayIcon } from "lucide-react";
 
 type NavItem = {
   name: string;
@@ -34,7 +36,7 @@ const navItems: NavItem[] = [
   {
     icon: <UserCircleIcon />,
     name: "User Profile",
-    path: "/profile",
+    path: "/users/profile",
   },
 
   {
@@ -46,6 +48,16 @@ const navItems: NavItem[] = [
     name: "Users",
     icon: <UserIcon />,
     path: "/users",
+  },
+  {
+    name: "Members",
+    icon: <GroupIcon />,
+    path: "/members",
+  },
+  {
+    name: "Matchs",
+    icon: <PlayIcon />,
+    path: "/matchs",
   },
 ];
 

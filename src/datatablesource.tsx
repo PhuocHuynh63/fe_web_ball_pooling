@@ -6,7 +6,7 @@ interface UserRow {
   username: string;
   email: string;
   address: string;
-  status: string;
+  role: string; // Changed from status to role
 }
 
 interface RenderCellParams {
@@ -21,7 +21,10 @@ export const userColumns: GridColDef[] = [
     width: 230,
     renderCell: (params: RenderCellParams) => {
       return (
-        <div className="cellWithImg"></div>
+        <div className="cellWithImg">
+          <img className="cellImg" src={params.row.img} alt="avatar" />
+          {params.row.username}
+        </div>
       );
     },
   },
@@ -31,13 +34,13 @@ export const userColumns: GridColDef[] = [
     width: 230,
   },
   {
-    field: "status",
-    headerName: "Status",
+    field: "role",
+    headerName: "Role",
     width: 160,
     renderCell: (params) => {
       return (
-        <div className={`cellWithStatus ${params.row.status}`}>
-          {params.row.status}
+        <div className={`cellWithRole ${params.row.role}`}>
+          {params.row.role}
         </div>
       );
     },

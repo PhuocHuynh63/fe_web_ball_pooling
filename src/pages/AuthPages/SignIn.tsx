@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { GoogleLogin } from "@react-oauth/google";
 import { Link } from "react-router";
 import GridShape from "../../components/common/GridShape";
 import Input from "../../components/form/input/InputField";
@@ -7,6 +6,7 @@ import Label from "../../components/form/Label";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Checkbox from "../../components/form/input/Checkbox";
 import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);

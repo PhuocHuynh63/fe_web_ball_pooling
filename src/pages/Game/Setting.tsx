@@ -17,6 +17,10 @@ const Setting = () => {
       teamStartFirst,
       timePerTurn,
     };
+
+    // Save settings data to localStorage
+    localStorage.setItem("settingsData", JSON.stringify(settingsData));
+
     navigate(-1); // Navigate back to the previous page (WaitingRoom)
   };
 
