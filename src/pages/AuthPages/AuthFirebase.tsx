@@ -4,9 +4,9 @@ import { Link } from "react-router";
 import GridShape from "../../components/common/GridShape";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Checkbox from "../../components/form/input/Checkbox";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../components/Auth_Firebase/firebase";
-import SignInwithGoogle from "../../components/Auth_Firebase/signInWIthGoogle";
+// import { signInWithEmailAndPassword } from "firebase/auth";
+// import { auth } from "../../components/Auth_Firebase/firebase";
+// import SignInwithGoogle from "../../components/Auth_Firebase/signInWIthGoogle";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -14,23 +14,27 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("User logged in Successfully");
-      window.location.href = "/profile";
-      toast.success("User logged in Successfully", {
-        position: "top-center",
-      });
-    } catch (error: any) {
-      console.log(error.message);
+const handleSubmit = async () => {
 
-      toast.error(error.message, {
-        position: "bottom-center",
-      });
-    }
-  };
+};
+
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   try {
+  //     await signInWithEmailAndPassword(auth, email, password);
+  //     console.log("User logged in Successfully");
+  //     window.location.href = "/profile";
+  //     toast.success("User logged in Successfully", {
+  //       position: "top-center",
+  //     });
+  //   } catch (error: any) {
+  //     console.log(error.message);
+
+  //     toast.error(error.message, {
+  //       position: "bottom-center",
+  //     });
+  //   }
+  // };
 
   return (
     <div className="relative flex w-full h-screen overflow-hidden bg-gray-900 z-1 dark:bg-gray-900">
@@ -135,7 +139,7 @@ function Login() {
               </a>
             </p>
             <div className="mt-3">
-              <SignInwithGoogle />
+              {/* <SignInwithGoogle /> */}
             </div>
           </form>
         </div>

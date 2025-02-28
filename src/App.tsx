@@ -1,7 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router";
 import AppLayout from "./layout/AppLayout";
 import AuthLayout from "./layout/AuthLayout";
-import SignIn from "./pages/AuthPages/SignIn";
+import SignIn from "./pages/AuthPages/AuthFirebase";
 import Blank from "./pages/Blank";
 import Ecommerce from "./pages/Dashboard/ECommerce";
 import NotFound from "./pages/OtherPage/NotFound";
