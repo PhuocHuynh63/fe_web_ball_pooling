@@ -9,7 +9,7 @@ import BasicTables from "./pages/Tables/BasicTables";
 import UserProfiles from "./pages/Users/UserProfiles";
 import Users from "./pages/Users/Users";
 import Members from "./pages/Users/Members";
-import Register from "./components/Auth_Firebase/register";
+// import Register from "./components/Auth_Firebase/register";
 import Guest from "./pages/Guest";
 import WaitingRoom from "./pages/Game/WaitingRoom";
 import Setting from "./pages/Game/Setting";
@@ -23,6 +23,7 @@ import Images from "./pages/UiElements/Images";
 import Videos from "./pages/UiElements/Videos";
 import MatchHistory from "./pages/Game/MatchHistory";
 import Invite from "./pages/Game/QRpage";
+import ScannerQR from "./components/Game/Scanner";
 
 
 export default function App() {
@@ -38,7 +39,7 @@ export default function App() {
             <Route path="/members" element={<Members />} />
             <Route path="/tables" element={<BasicTables />} />
             <Route path="/users/profile" element={<UserProfiles />} />
-            <Route path="/users/new" element={<Register />} />
+            {/* <Route path="/users/new" element={<Register />} /> */}
             <Route path="/matchs" element={<MatchHistory />} />
 
           {/* Ui Elements */}
@@ -63,6 +64,7 @@ export default function App() {
             <Route path="/setting" element={<Setting />} />
             <Route path="/Scoreboard" element={<Scoreboard />} />
             <Route path="/qrCode" element={<Invite />} />
+            <Route path="/scanner-qr" element={<ScannerQR />} />
            
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />

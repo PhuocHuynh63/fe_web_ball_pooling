@@ -1,23 +1,46 @@
-import React from "react";
-import { ArrowLeft, QrCode } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+"use client"
+
+import { ArrowLeft, QrCode } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import QRCode from "react-qr-code"
+import { useEffect, useState } from "react"
 
 interface QRScannerProps {
-  onBack?: () => void;
-  qrCodeData?: string;
+  onBack?: () => void
+  qrCodeData?: string
 }
 
 export default function QRScanner({ onBack = () => {}, qrCodeData = "" }: QRScannerProps) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const [tableId, setTableId] = useState<string | null>(null)
+  const [qrValue, setQrValue] = useState<string>("")
+
+  useEffect(() => {
+    // Get the current table ID from localStorage
+    const bidaTableId = localStorage.getItem("bidaTableId")
+    setTableId(bidaTableId)
+
+    // Generate the QR code URL - this should be your full domain URL in production
+    if (bidaTableId) {
+      // For local development, you might use localhost
+      // In production, replace with your actual domain
+      const baseUrl = window.location.origin
+      setQrValue(`${baseUrl}/waiting-room/${bidaTableId}`)
+    }
+  }, [])
 
   const handleBackToTables = () => {
-    const bidaTableId = localStorage.getItem("bidaTableId");
+    const bidaTableId = localStorage.getItem("bidaTableId")
     if (bidaTableId) {
-      navigate(`/waiting-room/${bidaTableId}`);
+      navigate(`/waiting-room/${bidaTableId}`)
     } else {
-      navigate("/waiting-room");
+      navigate("/waiting-room")
     }
-  };
+  }
+
+  const handleOpenScanner = () => {
+    navigate("/scanner-qr")
+  }
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-blue-900">
@@ -30,7 +53,7 @@ export default function QRScanner({ onBack = () => {}, qrCodeData = "" }: QRScan
         <button onClick={handleBackToTables} className="text-white p-2 rounded-full" aria-label="Go back">
           <ArrowLeft size={24} />
         </button>
-        <button className="text-white p-2 rounded-full" aria-label="QR code">
+        <button onClick={handleOpenScanner} className="text-white p-2 rounded-full" aria-label="QR code scanner">
           <QrCode size={24} />
         </button>
       </div>
@@ -44,16 +67,19 @@ export default function QRScanner({ onBack = () => {}, qrCodeData = "" }: QRScan
           </div>
         </div>
 
-        {/* QR Code */}
-        <div className="w-48 h-48 mb-4">
-          {qrCodeData ? (
-            <img src={qrCodeData || "/placeholder.svg"} alt="QR Code" className="w-full h-full object-cover" />
-          ) : (
-            <img
-              src="/QR.png"
-              alt="QR Code"
-              className="w-full h-full object-cover"
+        {/* Dynamic QR Code */}
+        <div className="w-48 h-48 mb-4 flex items-center justify-center bg-white p-2">
+          {qrValue ? (
+            <QRCode
+              value={qrValue}
+              size={192}
+              style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+              viewBox={`0 0 256 256`}
             />
+          ) : (
+            <div className="animate-pulse bg-gray-200 w-full h-full flex items-center justify-center">
+              <span className="text-gray-400">Loading QR...</span>
+            </div>
           )}
         </div>
 
@@ -63,8 +89,11 @@ export default function QRScanner({ onBack = () => {}, qrCodeData = "" }: QRScan
           <br />
           table to continue
         </p>
+
+        {/* Display the table ID for reference */}
+        {tableId && <p className="mt-2 text-sm text-purple-700 font-medium">Table ID: {tableId}</p>}
       </div>
     </div>
-  );
+  )
 }
 

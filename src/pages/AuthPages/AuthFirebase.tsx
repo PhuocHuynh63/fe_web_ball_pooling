@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router";
 import GridShape from "../../components/common/GridShape";
+import GoogleLogin from "../../api/Auth/GoogleLogin";
+
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Checkbox from "../../components/form/input/Checkbox";
-// import { signInWithEmailAndPassword } from "firebase/auth";
-// import { auth } from "../../components/Auth_Firebase/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../components/Auth_Firebase/firebase";
+
 // import SignInwithGoogle from "../../components/Auth_Firebase/signInWIthGoogle";
 
 function Login() {
@@ -70,7 +73,7 @@ const handleSubmit = async () => {
             </h1>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-3">
+          {/* <form onSubmit={handleSubmit} className="space-y-3">
             <div className="mb-3 p-2">
               <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                 Email<span className="text-error-500">*</span>
@@ -139,9 +142,10 @@ const handleSubmit = async () => {
               </a>
             </p>
             <div className="mt-3">
-              {/* <SignInwithGoogle /> */}
+              
             </div>
-          </form>
+          </form> */}
+          <GoogleLogin />
         </div>
       </div>
       <div className="relative items-center justify-center flex-1 hidden p-6 z-1 bg-brand-950 dark:bg-white/5 lg:flex">

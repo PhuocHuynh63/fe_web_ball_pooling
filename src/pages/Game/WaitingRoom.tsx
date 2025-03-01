@@ -31,7 +31,7 @@ const WaitingRoom: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-600">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-blue-900">
       <div className="absolute top-4 left-4">
         <button
           className="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800"
