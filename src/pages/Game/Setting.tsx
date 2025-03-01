@@ -34,8 +34,9 @@ const Setting = () => {
           value={modeGame}
           onChange={(e) => setModeGame(e.target.value)}
         >
-          <option>8 Balls</option>
-          <option>9 Balls</option>
+          <option>Bida 8</option>
+          <option>Bida 15</option>
+
         </select>
         <label className="block text-left text-gray-700">Number of teams</label>
         <select

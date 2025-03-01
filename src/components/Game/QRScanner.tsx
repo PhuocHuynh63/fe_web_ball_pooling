@@ -25,7 +25,7 @@ export default function QRScanner({ onBack = () => {}, qrCodeData = "" }: QRScan
       // For local development, you might use localhost
       // In production, replace with your actual domain
       const baseUrl = window.location.origin
-      setQrValue(`https://fe-web-ball-pooling-gz8toqa29-anhtri22303s-projects.vercel.app/waiting-room/${bidaTableId}`)
+      setQrValue(`${baseUrl}/waiting-room/${bidaTableId}`)
     }
   }, [])
 
