@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
 import BasicTableOne from "../../components/tables/BasicTableOne";
 import PageMeta from "../../components/common/PageMeta";
+import Modal from "./Modal";
+
 
 const tables = [
   { id: 1, name: "Table 1" },
@@ -14,9 +16,31 @@ const tables = [
 
 const BasicTables: React.FC = () => {
   const navigate = useNavigate();
+  const [selectedTableId, setSelectedTableId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleTableClick = (tableId: number) => {
-    navigate(`/waiting-room/${tableId}`);
+    setSelectedTableId(tableId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedTableId(null);
+  };
+
+  const handleTeamClick = () => {
+    if (selectedTableId !== null) {
+      navigate(`/team-waiting-room/${selectedTableId}`);
+    }
+    handleCloseModal();
+  };
+
+  const handleSoloClick = () => {
+    if (selectedTableId !== null) {
+      navigate(`/waiting-room/${selectedTableId}`);
+    }
+    handleCloseModal();
   };
 
   return (
@@ -31,6 +55,12 @@ const BasicTables: React.FC = () => {
           <BasicTableOne onTableClick={handleTableClick} />
         </ComponentCard>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onTeamClick={handleTeamClick}
+        onSoloClick={handleSoloClick}
+      />
     </>
   );
 };

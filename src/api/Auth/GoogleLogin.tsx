@@ -1,47 +1,21 @@
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 
 /**
- * Handles Google authentication by calling the backend API
- * and managing the authentication flow
+ * Handles Google authentication by redirecting to the backend API
  * @returns A function that initiates the Google login process
  */
 export const handleGoogleLogin = async () => {
   try {
-    // Call your backend API for Google authentication
-    const response = await fetch("/api/auth/google", {
-      method: "GET",
-      credentials: "include", // Important for cookies
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error("Failed to authenticate with Google")
-    }
-
-    const data = await response.json()
-
-    if (data.redirectUrl) {
-      // Redirect to Google's OAuth page
-      window.location.href = data.redirectUrl
-    } else if (data.success) {
-      // User is already authenticated
-      window.location.href = "/profile"
-      toast.success("Login successful", {
-        position: "top-center",
-      })
-    } else {
-      throw new Error(data.message || "Authentication failed")
-    }
+    // Redirect to the backend API for Google authentication
+    window.location.href = "http://localhost:3000/auth/google";
   } catch (error) {
-    console.error("Login error:", error)
+    console.error("Login error:", error);
     const errorMessage = error instanceof Error ? error.message : "Login failed";
     toast.error(errorMessage, {
       position: "bottom-center",
-    })
+    });
   }
-}
+};
 
 /**
  * Google Login component that provides a button to initiate Google authentication
@@ -72,8 +46,8 @@ const GoogleLogin = () => {
       </svg>
       Sign in with Google
     </button>
-  )
-}
+  );
+};
 
-export default GoogleLogin
+export default GoogleLogin;
 

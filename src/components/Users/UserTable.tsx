@@ -1,60 +1,80 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import { fetchUserProfile, deleteUser } from "../../api/User/users";
+import axios from "axios";
 
 interface User {
-  id: number;
-  username: string;
+  _id: string;
+  name: string;
+  phone: string;
   email: string;
   password: string;
   role: string;
+  status: string;
 }
 
-const users: User[] = [
-  { id: 1, username: "user1", email: "user1@example.com", password: "password1", role: "admin" },
-  { id: 2, username: "user2", email: "user2@example.com", password: "password2", role: "user" },
-  { id: 3, username: "user3", email: "user3@example.com", password: "password3", role: "user" },
-  { id: 4, username: "staff3", email: "user4@example.com", password: "password4", role: "staff" },
-  { id: 5, username: "user5", email: "user5@example.com", password: "password5", role: "admin" },
-  { id: 6, username: "staff1", email: "staff1@example.com", password: "password6", role: "staff" },
-  { id: 7, username: "staff2", email: "staff2@example.com", password: "password7", role: "staff" },
-];
-
 export default function UserTable() {
+  const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const navigate = useNavigate();
+  const token = localStorage.getItem("authToken");
 
-  const filteredUsers = users.filter(
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("http://14.225.212.212:8080/api/v1/users", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Đúng định dạng
+          },
+        });
+        const data = response.data as { data: User[] };
+        setUsers(data.data); // Access the nested data property
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, [token]);
+
+  const filteredUsers = Array.isArray(users) ? users.filter(
     (user) =>
-      (user.role.toLowerCase() === "admin" || user.role.toLowerCase() === "staff") &&
-      (user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.phone.includes(searchTerm)
+  ) : [];
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleView = async (id: number) => {
+  const handleView = async (id: string) => {
     try {
-      const userProfile = await fetchUserProfile(id);
-      console.log("User Profile:", userProfile);
+      const response = await axios.get(`http://14.225.212.212:8080/api/v1/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Đúng định dạng
+        },
+      });
+      console.log("User Profile:", response.data);
       navigate(`/profile/${id}`);
     } catch (error) {
       console.error("Error fetching user profile:", error);
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     try {
-      await deleteUser(id);
+      await axios.delete(`http://14.225.212.212:8080/api/v1/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Đúng định dạng
+        },
+      });
       console.log(`User with ID: ${id} deleted`);
-      // Optionally, refresh the user list or update the state to remove the deleted user
+      setUsers(users.filter(user => user._id !== id));
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -64,8 +84,6 @@ export default function UserTable() {
     switch (role) {
       case "admin":
         return "bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-300";
-      case "moderator":
-        return "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300";
       case "staff":
         return "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300";
       default:
@@ -107,7 +125,8 @@ export default function UserTable() {
           <thead>
             <tr className="bg-gray-50 dark:bg-gray-700 border-y border-gray-200 dark:border-gray-600">
               <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">ID</th>
-              <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Username</th>
+              <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Name</th>
+              <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Phone</th>
               <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Email</th>
               <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Role</th>
               <th className="text-right py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Actions</th>
@@ -115,9 +134,10 @@ export default function UserTable() {
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
             {paginatedUsers.map((user) => (
-              <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{user.id}</td>
-                <td className="py-4 px-5 text-lg text-gray-900 dark:text-gray-200 font-medium">{user.username}</td>
+              <tr key={user._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{user._id}</td>
+                <td className="py-4 px-5 text-lg text-gray-900 dark:text-gray-200 font-medium">{user.name}</td>
+                <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{user.phone}</td>
                 <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{user.email}</td>
                 <td className="py-4 px-5">
                   <span
@@ -128,13 +148,13 @@ export default function UserTable() {
                 </td>
                 <td className="py-4 px-5 text-right space-x-2">
                   <button
-                    onClick={() => handleView(user.id)}
+                    onClick={() => handleView(user._id)}
                     className="px-4 py-2 text-lg text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900 rounded-md transition-colors"
                   >
                     View
                   </button>
                   <button
-                    onClick={() => handleDelete(user.id)}
+                    onClick={() => handleDelete(user._id)}
                     className="px-4 py-2 text-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 rounded-md transition-colors"
                   >
                     Delete

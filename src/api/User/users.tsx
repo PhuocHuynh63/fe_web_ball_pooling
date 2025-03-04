@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { axiosClient } from "../../config/axios"
 
 const API_URL = 'https://your-backend-api-url.com'; // Replace with your backend API URL
 
@@ -38,3 +39,12 @@ export const fetchUserByEmail = async (email: string): Promise<UserProfile> => {
   const response = await axios.get<UserProfile>(`${API_URL}/users/email/${email}`);
   return response.data;
 };
+
+
+
+
+export const userService = {
+    async getAllUsers() {
+        return axiosClient.get('/users');
+    }
+}

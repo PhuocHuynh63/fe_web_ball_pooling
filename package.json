@@ -26,7 +26,7 @@
     "@types/react-toastify": "^4.0.2",
     "apexcharts": "^4.1.0",
     "autoprefixer": "^10.4.20",
-    "axios": "^1.8.1",
+    "axios": "^1.7.9",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "firebase": "^11.3.1",

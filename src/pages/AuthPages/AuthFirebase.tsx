@@ -1,43 +1,39 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import GridShape from "../../components/common/GridShape";
 import GoogleLogin from "../../api/Auth/GoogleLogin";
-
 import { EyeCloseIcon, EyeIcon } from "../../icons";
-import Checkbox from "../../components/form/input/Checkbox";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../components/Auth_Firebase/firebase";
-
-// import SignInwithGoogle from "../../components/Auth_Firebase/signInWIthGoogle";
+import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
 
-const handleSubmit = async () => {
-
-};
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   try {
-  //     await signInWithEmailAndPassword(auth, email, password);
-  //     console.log("User logged in Successfully");
-  //     window.location.href = "/profile";
-  //     toast.success("User logged in Successfully", {
-  //       position: "top-center",
-  //     });
-  //   } catch (error: any) {
-  //     console.log(error.message);
-
-  //     toast.error(error.message, {
-  //       position: "bottom-center",
-  //     });
-  //   }
-  // };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const data = { email, password };
+    try {
+      const response = await axios.post(`http://14.225.212.212:8080/api/v1/auth/login`, data);
+      const responseData = response.data as { token: string }; // Add type assertion
+      console.log("Login successful:", responseData);
+      toast.success("Login successful", {
+        position: "top-center",
+      });
+      // Store the token in localStorage
+      localStorage.setItem("authToken", responseData.token);
+      // Navigate to the admin page
+      navigate("/admin");
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Login failed", {
+        position: "bottom-center",
+      });
+    }
+  };
 
   return (
     <div className="relative flex w-full h-screen overflow-hidden bg-gray-900 z-1 dark:bg-gray-900">
@@ -63,7 +59,7 @@ const handleSubmit = async () => {
                 strokeLinejoin="round"
               />
             </svg>
-            Back to dashboard
+            Back to Home page
           </Link>
         </div>
         <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto p-2">
@@ -73,78 +69,52 @@ const handleSubmit = async () => {
             </h1>
           </div>
 
-          {/* <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="mb-3 p-2">
-              <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                Email<span className="text-error-500">*</span>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                Email
               </label>
               <input
                 type="email"
                 id="email"
-                name="email"
-                placeholder="Enter your email"
-                className="w-full px-2 py-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700 dark:text-gray-200"
               />
             </div>
-            <div className="mb-3 p-2">
-              <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                Password<span className="text-error-500">*</span>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                Password
               </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  className="w-full px-2 py-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500"
+                  id="password"
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700 dark:text-gray-200"
                 />
-                <span
+                <button
+                  type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
                 >
-                  {showPassword ? (
-                    <EyeIcon className="fill-gray-500 dark:fill-gray-400" />
-                  ) : (
-                    <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400" />
-                  )}
-                </span>
+                  {showPassword ? <EyeCloseIcon /> : <EyeIcon />}
+                </button>
               </div>
             </div>
-            <div className="flex items-center gap-2 mb-3 p-2">
-              <Checkbox
-                className="w-4 h-4"
-                checked={isChecked}
-                onChange={setIsChecked}
-              />
-              <p className="inline-block font-normal text-gray-500 dark:text-gray-400 text-xs">
-                By creating an account means you agree to the{" "}
-                <span className="text-gray-800 dark:text-white/90">
-                  Terms and Conditions,
-                </span>{" "}
-                and our{" "}
-                <span className="text-gray-800 dark:text-white">
-                  Privacy Policy
-                </span>
-              </p>
-            </div>
-            <div className="mb-3">
+            <div>
               <button
                 type="submit"
-                className="w-full px-3 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                Submit
+                Sign in
               </button>
             </div>
-            <p className="text-sm text-right text-gray-600">
-              New user{" "}
-              <a href="/register" className="text-blue-600 hover:underline">
-                Register Here
-              </a>
-            </p>
-            <div className="mt-3">
-              
-            </div>
-          </form> */}
+          </form>
+
           <GoogleLogin />
         </div>
       </div>

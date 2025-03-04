@@ -31,11 +31,7 @@ export default function QRScanner({ onBack = () => {}, qrCodeData = "" }: QRScan
 
   const handleBackToTables = () => {
     const bidaTableId = localStorage.getItem("bidaTableId")
-    if (bidaTableId) {
-      navigate(`/waiting-room/${bidaTableId}`)
-    } else {
-      navigate("/waiting-room")
-    }
+    navigate(-1);
   }
 
   const handleOpenScanner = () => {
