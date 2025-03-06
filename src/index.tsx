@@ -20,11 +20,12 @@ root.render(
   <React.StrictMode>
     <AppWrapper>
       <ThemeProvider>
-        <App />
+        
       {/* <AuthContextProvider>  </AuthContextProvider> */}
       
-        {/* <GoogleOAuthProvider clientId="942310409525-d8257ve8p1v4pe5s2mnn5duppdadhiaj.apps.googleusercontent.com">
-        </GoogleOAuthProvider> */}
+        <GoogleOAuthProvider clientId="942310409525-d8257ve8p1v4pe5s2mnn5duppdadhiaj.apps.googleusercontent.com">
+        <App />
+        </GoogleOAuthProvider>
       </ThemeProvider>
     </AppWrapper>
   </React.StrictMode>

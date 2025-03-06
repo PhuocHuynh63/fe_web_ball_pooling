@@ -1,17 +1,25 @@
 import { toast } from "react-toastify";
-
+import axiosInstance from "../../api/axiosInstance";
 /**
  * Handles Google authentication by redirecting to the backend API
  * @returns A function that initiates the Google login process
  */
 export const handleGoogleLogin = async () => {
   try {
-    // Redirect to the backend API for Google authentication
-    window.location.href = "http://localhost:3000/auth/google";
+    const response = await axiosInstance.get(`/auth/google`);
+    const responseData = response.data as { data: { user: { _id: string; email: string }; access_token: string } }; // Add type assertion
+    console.log("Login successful:", responseData);
+    toast.success("Login successful", {
+      position: "top-center",
+    });
+    // Store the token and user ID in localStorage
+    // localStorage.setItem("authToken", responseData.data.access_token);
+    // localStorage.setItem("userId", responseData.data.user._id);
+    // Navigate to the admin page
+   
   } catch (error) {
     console.error("Login error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Login failed";
-    toast.error(errorMessage, {
+    toast.error("Login failed", {
       position: "bottom-center",
     });
   }

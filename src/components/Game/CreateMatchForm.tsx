@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 const CreateMatchForm: React.FC = () => {
   const [status, setStatus] = useState("active");
@@ -19,15 +19,8 @@ const CreateMatchForm: React.FC = () => {
       deletedAt,
     };
 
-    const token = localStorage.getItem("authToken"); // Retrieve the token from localStorage
-
     try {
-      const response = await axios.post("http://14.225.212.212:8080/api/v1/matches", data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Đúng định dạng
-        },
-      });
+      const response = await axiosInstance.post("/matches", data);
       console.log("Match created successfully:", response.data);
       toast.success("Match created successfully", {
         position: "top-center",

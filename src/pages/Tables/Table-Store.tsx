@@ -21,10 +21,41 @@ interface BilliardTable {
   duration: string;
 }
 
-const BasicTables: React.FC = () => {
+const TableStore: React.FC = () => {
   const { storeId } = useParams<{ storeId: string }>();
   const navigate = useNavigate();
-  const [tables, setTables] = useState<BilliardTable[]>([]);
+  const [tables, setTables] = useState<BilliardTable[]>([
+    {
+      id: 1,
+      tableNumber: "Table 1",
+      status: "available",
+      players: [
+        { image: "player1.jpg", name: "Player 1" },
+        { image: "player2.jpg", name: "Player 2" },
+      ],
+      gameType: "8-ball",
+      duration: "30 mins",
+    },
+    {
+      id: 2,
+      tableNumber: "Table 2",
+      status: "occupied",
+      players: [
+        { image: "player3.jpg", name: "Player 3" },
+        { image: "player4.jpg", name: "Player 4" },
+      ],
+      gameType: "9-ball",
+      duration: "45 mins",
+    },
+    {
+      id: 3,
+      tableNumber: "Table 3",
+      status: "available",
+      players: [],
+      gameType: "8-ball",
+      duration: "60 mins",
+    },
+  ]);
   const [selectedTableId, setSelectedTableId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
@@ -56,6 +87,8 @@ const BasicTables: React.FC = () => {
     };
   }, []);
 
+  // Comment out the useEffect hook to disable fetching tables from the API
+  /*
   useEffect(() => {
     if (storeId) {
       axios.get(`/api/stores/${storeId}/tables`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }).then((response) => {
@@ -63,6 +96,7 @@ const BasicTables: React.FC = () => {
       });
     }
   }, [storeId]);
+  */
 
   const handleTableClick = (tableId: number) => {
     setSelectedTableId(tableId);
@@ -147,4 +181,4 @@ const BasicTables: React.FC = () => {
   );
 };
 
-export default BasicTables;
+export default TableStore;

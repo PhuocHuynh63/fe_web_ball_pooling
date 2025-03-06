@@ -1,4 +1,6 @@
+import React, { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
+import axiosInstance from "../../api/axiosInstance";
 
 interface MatchData {
   players: string;
@@ -10,6 +12,24 @@ interface MatchData {
 }
 
 export default function MatchHistory() {
+  const [matches, setMatches] = useState<MatchData[]>([]);
+
+  useEffect(() => {
+    const fetchMatches = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await axiosInstance.get<MatchData[]>("/matches", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setMatches(response.data);
+      } catch (error) {
+        console.error("Error fetching matches:", error);
+      }
+    };
+
+    fetchMatches();
+  }, []);
+
   const recentMatches: MatchData[] = [
     {
       players: "Player A\nPlayer B",
@@ -34,6 +54,8 @@ export default function MatchHistory() {
       date: "Feb 6, 2025",
     },
   ];
+
+  const allMatches = [...recentMatches, ...matches];
 
   return (
     <div className="min-h-screen bg-black bg-opacity-80 text-white">
@@ -66,11 +88,11 @@ export default function MatchHistory() {
           </div>
 
           {/* Match Rows */}
-          {recentMatches.map((match, index) => (
+          {allMatches.map((match, index) => (
             <div
               key={index}
               className={`grid grid-cols-5 text-lg py-2 px-3 ${
-                index < recentMatches.length - 1 ? "border-b border-gray-700" : ""
+                index < allMatches.length - 1 ? "border-b border-gray-700" : ""
               }`}
             >
               <div className="whitespace-pre-line">

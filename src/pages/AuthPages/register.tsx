@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 export function Register() {
   const [email, setEmail] = useState("");
@@ -9,34 +9,26 @@ export function Register() {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("");
-  const [avatar, setAvatar] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  
+  const navigate = useNavigate();
+
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("username", username);
-    formData.append("password", password);
-    formData.append("phone", phone);
-    formData.append("role", role);
-    if (avatar) {
-      formData.append("avatar", avatar);
-    }
-    const token = localStorage.getItem("authToken");
+
+    const formData = {
+      email,
+      username,
+      password,
+      phone,
+      role,
+    };
 
     try {
-      const response = await axios.post("http://14.225.212.212:8080/api/v1/auth/register", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`, // Đúng định dạng
-        },
-      });
+      const response = await axiosInstance.post("/auth/register", formData);
       console.log("Registration successful:", response.data);
       toast.success("Registration successful", {
         position: "top-center",
       });
-      // Redirect or perform other actions after successful registration
+      navigate("/auth"); // Redirect to login page after successful registration
     } catch (error) {
       console.error("Registration error:", error);
       toast.error("Registration failed", {
@@ -45,24 +37,10 @@ export function Register() {
     }
   };
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    setAvatar(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setAvatarPreview(null);
-    }
-  };
-
   return (
     <div className="relative flex w-full h-screen overflow-hidden bg-gray-900 z-1 dark:bg-gray-900">
       <div className="flex flex-col flex-1 p-4 rounded-2xl sm:rounded-none sm:border-0 sm:p-6">
-      <div className="w-full max-w-md pt-5 mx-auto sm:py-8">
+        <div className="w-full max-w-md pt-5 mx-auto sm:py-8">
           <Link
             to="/auth"
             className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
@@ -85,22 +63,6 @@ export function Register() {
             </svg>
             Back to Sign In
           </Link>
-        </div>
-        <div className="flex justify-between items-center w-full max-w-md pt-5 mx-auto sm:py-8">
-          <div className="relative mx-auto">
-            <input
-              type="file"
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              onChange={handleAvatarChange}
-            />
-            <div className="w-24 h-24 rounded-full border-2 border-gray-300 flex items-center justify-center overflow-hidden">
-              {avatarPreview ? (
-                <img src={avatarPreview} alt="Avatar Preview" className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-gray-500 flex items-center justify-center h-full">Upload Avatar</span>
-              )}
-            </div>
-          </div>
         </div>
         <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto p-2">
           <form onSubmit={handleRegister} className="space-y-3">
