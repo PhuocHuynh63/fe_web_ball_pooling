@@ -1,29 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Star } from "lucide-react"
+import { Star, X } from "lucide-react";
 
 interface Player {
-  name: string
-  isReady?: boolean
-  isCaptain?: boolean
+  name: string;
+  isReady?: boolean;
+  isCaptain?: boolean;
 }
 
 interface TeamProps {
-  name: string
-  players: Player[]
-  color: "red" | "green"
+  name: string;
+  players: Player[];
+  color: "red" | "green";
 }
 
 export default function TeamWaiting() {
-    const { tableId } = useParams<{ tableId: string }>();
-    const [players, setPlayers] = useState<string[]>([]);
-    const navigate = useNavigate();
-  
-    useEffect(() => {
-      // Fetch existing players for the table from the server or local storage
-      const existingPlayers = JSON.parse(localStorage.getItem(`table-${tableId}`) || "[]");
-      setPlayers(existingPlayers);
-    }, [tableId]);
+  const { tableId } = useParams<{ tableId: string }>();
+  const [players, setPlayers] = useState<string[]>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch existing players for the table from the server or local storage
+    const existingPlayers = JSON.parse(localStorage.getItem(`table-${tableId}`) || "[]");
+    setPlayers(existingPlayers);
+  }, [tableId]);
 
   const [teams, setTeams] = useState<TeamProps[]>([
     {
@@ -36,7 +36,7 @@ export default function TeamWaiting() {
       players: [{ name: "PLAYER 1" }],
       color: "green",
     },
-  ])
+  ]);
 
   const handleAddPlayer = (bidaTableId: string) => {
     localStorage.setItem("bidaTableId", bidaTableId);
@@ -52,12 +52,12 @@ export default function TeamWaiting() {
   };
 
   const handleBackToTables = () => {
-    navigate("/tables");
+    navigate(-1);
   };
 
   return (
     <div className="flex flex-col h-screen bg-black text-white relative">
-        <div className="absolute top-4 left-4">
+      <div className="absolute top-4 left-4">
         <button
           className="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800"
           onClick={handleBackToTables}
@@ -98,11 +98,11 @@ export default function TeamWaiting() {
 
           {/* Invite button */}
           <button
-          className="mt-4 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-800"
-          onClick={() => tableId && handleAddPlayer(tableId)}
-        >
-          Invite player
-        </button>
+            className="mt-4 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-800"
+            onClick={() => tableId && handleAddPlayer(tableId)}
+          >
+            Invite player
+          </button>
 
           {/* Team B */}
           <div className="rounded-lg overflow-hidden">
@@ -119,20 +119,20 @@ export default function TeamWaiting() {
 
           {/* Start match button */}
           <button
-          className="mt-4 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-800"
-          onClick={handleSettingMatch}
-        >
-          Setting Match
-        </button>
-        <button
-          className="mt-4 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-800"
-          onClick={handleStartMatch}
-        >
-          Start Match
-        </button>
+            className="mt-4 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-800"
+            onClick={handleSettingMatch}
+          >
+            Setting Match
+          </button>
+          <button
+            className="mt-4 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-800"
+            onClick={handleStartMatch}
+          >
+            Start Match
+          </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 

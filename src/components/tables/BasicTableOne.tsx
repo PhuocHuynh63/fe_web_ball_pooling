@@ -14,72 +14,14 @@ interface BilliardTable {
 }
 
 interface BasicTableOneProps {
+  tables: BilliardTable[];
   onTableClick: (tableId: number) => void;
 }
 
-// Define the table data using the interface
-const tableData: BilliardTable[] = [
-  {
-    id: 1,
-    tableNumber: "Table 1",
-    status: "Now",
-    players: [
-      { image: "/images/user/user-17.jpg", name: "Lindsey Curtis" },
-      { image: "/images/user/user-18.jpg", name: "Kaiya George" },
-    ],
-    gameType: "8-Ball",
-    duration: "1h 30m",
-  },
-  {
-    id: 2,
-    tableNumber: "Table 2",
-    status: "Close",
-    players: [
-      { image: "/images/user/user-19.jpg", name: "Zain Geidt" },
-      { image: "/images/user/user-20.jpg", name: "Abram Schleifer" },
-    ],
-    gameType: "9-Ball",
-    duration: "2h 15m",
-  },
-  {
-    id: 3,
-    tableNumber: "Table 3",
-    status: "Now",
-    players: [
-      { image: "/images/user/user-21.jpg", name: "Carla George" },
-      { image: "/images/user/user-22.jpg", name: "Lindsey Curtis" },
-    ],
-    gameType: "Straight Pool",
-    duration: "45m",
-  },
-  {
-    id: 4,
-    tableNumber: "Table 4",
-    status: "Close",
-    players: [
-      { image: "/images/user/user-23.jpg", name: "Kaiya George" },
-      { image: "/images/user/user-24.jpg", name: "Zain Geidt" },
-    ],
-    gameType: "8-Ball",
-    duration: "1h 10m",
-  },
-  {
-    id: 5,
-    tableNumber: "Table 5",
-    status: "Now",
-    players: [
-      { image: "/images/user/user-25.jpg", name: "Abram Schleifer" },
-      { image: "/images/user/user-26.jpg", name: "Carla George" },
-    ],
-    gameType: "9-Ball",
-    duration: "2h",
-  },
-];
-
-export default function BasicTableOne({ onTableClick }: BasicTableOneProps) {
+export default function BasicTableOne({ tables, onTableClick }: BasicTableOneProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {tableData.map((table) => (
+      {tables.map((table) => (
         <div
           key={table.id}
           onClick={() => onTableClick(table.id)}

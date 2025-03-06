@@ -17,7 +17,7 @@ import {
   UserIcon,
 } from "../icons";
 import SidebarWidget from "./SidebarWidget";
-import { PlayIcon } from "lucide-react";
+import { ClubIcon, PlayIcon } from "lucide-react";
 
 type NavItem = {
   name: string;
@@ -30,7 +30,7 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    path: "/dashboard",
+    path: "/admin",
   },
 
   {
@@ -55,9 +55,14 @@ const navItems: NavItem[] = [
     path: "/members",
   },
   {
-    name: "Matchs",
+    name: "Matches",
     icon: <PlayIcon />,
-    path: "/matchs",
+    path: "/matches",
+  },
+  {
+    name: "Stores",
+    icon: <ClubIcon />,
+    path: "/stores",
   },
 ];
 

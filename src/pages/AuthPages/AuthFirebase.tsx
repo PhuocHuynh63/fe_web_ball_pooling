@@ -4,27 +4,27 @@ import { Link, useNavigate } from "react-router-dom";
 import GridShape from "../../components/common/GridShape";
 import GoogleLogin from "../../api/Auth/GoogleLogin";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const data = { email, password };
     try {
-      const response = await axios.post(`http://14.225.212.212:8080/api/v1/auth/login`, data);
-      const responseData = response.data as { token: string }; // Add type assertion
+      const response = await axiosInstance.post(`/auth/login`, data);
+      const responseData = response.data as { data: { user: { _id: string; email: string }; access_token: string } }; // Add type assertion
       console.log("Login successful:", responseData);
       toast.success("Login successful", {
         position: "top-center",
       });
-      // Store the token in localStorage
-      localStorage.setItem("authToken", responseData.token);
+      // Store the token and user ID in localStorage
+      localStorage.setItem("authToken", responseData.data.access_token);
+      localStorage.setItem("userId", responseData.data.user._id);
       // Navigate to the admin page
       navigate("/admin");
     } catch (error) {

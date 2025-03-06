@@ -1,45 +1,40 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 interface User {
   _id: string;
   name: string;
-  phone: string;
   email: string;
-  password: string;
+  phone: string;
   role: string;
-  status: string;
 }
 
-export default function UserTable() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+const UserTable: React.FC = () => {
+  const [users, setUsers] = React.useState<User[]>([]);
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [currentPage, setCurrentPage] = React.useState(1);
   const itemsPerPage = 5;
   const navigate = useNavigate();
-  const token = localStorage.getItem("authToken");
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://14.225.212.212:8080/api/v1/users", {
-          headers: {
-            Authorization: `Bearer ${token}`, // Đúng định dạng
-          },
+        const token = localStorage.getItem("authToken");
+        const response = await axiosInstance.get<User[]>("/users", {
+          headers: { Authorization: `Bearer ${token}` },
         });
-        const data = response.data as { data: User[] };
-        setUsers(data.data); // Access the nested data property
+        setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
 
     fetchUsers();
-  }, [token]);
+  }, []);
 
   const filteredUsers = Array.isArray(users) ? users.filter(
     (user) =>
@@ -52,27 +47,13 @@ export default function UserTable() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleView = async (id: string) => {
-    try {
-      const response = await axios.get(`http://14.225.212.212:8080/api/v1/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Đúng định dạng
-        },
-      });
-      console.log("User Profile:", response.data);
-      navigate(`/profile/${id}`);
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
-    }
+  const handleViewUser = (userId: string) => {
+    navigate(`/users/profile?userId=${userId}`);
   };
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://14.225.212.212:8080/api/v1/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Đúng định dạng
-        },
-      });
+      await axiosInstance.delete(`/users/${id}`);
       console.log(`User with ID: ${id} deleted`);
       setUsers(users.filter(user => user._id !== id));
     } catch (error) {
@@ -148,7 +129,7 @@ export default function UserTable() {
                 </td>
                 <td className="py-4 px-5 text-right space-x-2">
                   <button
-                    onClick={() => handleView(user._id)}
+                    onClick={() => handleViewUser(user._id)}
                     className="px-4 py-2 text-lg text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900 rounded-md transition-colors"
                   >
                     View
@@ -225,5 +206,7 @@ export default function UserTable() {
       )}
     </div>
   );
-}
+};
+
+export default UserTable;
 

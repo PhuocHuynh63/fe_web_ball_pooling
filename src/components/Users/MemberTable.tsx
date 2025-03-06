@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 interface User {
   _id: string;
@@ -21,16 +21,11 @@ export default function MemberTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const navigate = useNavigate();
-  const token = localStorage.getItem("authToken");
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://14.225.212.212:8080/api/v1/users", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axiosInstance.get("users/find");
         const data = response.data as { data: User[] };
         setUsers(data.data.filter(user => user.role === "user")); // Filter users with role "user"
       } catch (error) {
@@ -39,7 +34,7 @@ export default function MemberTable() {
     };
 
     fetchUsers();
-  }, [token]);
+  }, []);
 
   const filteredUsers = Array.isArray(users) ? users.filter(
     (user) =>
@@ -54,11 +49,7 @@ export default function MemberTable() {
 
   const handleView = async (id: string) => {
     try {
-      const response = await axios.get(`http://14.225.212.212:8080/api/v1/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosInstance.get(`/users/${id}`);
       console.log("User Profile:", response.data);
       navigate(`/profile/${id}`);
     } catch (error) {
@@ -68,11 +59,7 @@ export default function MemberTable() {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://14.225.212.212:8080/api/v1/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axiosInstance.delete(`/users/${id}`);
       console.log(`User with ID: ${id} deleted`);
       setUsers(users.filter(user => user._id !== id));
     } catch (error) {
