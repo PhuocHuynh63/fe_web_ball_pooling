@@ -13,7 +13,7 @@ import Users from "./pages/Users/Users";
 import Members from "./pages/Users/Members";
 
 import Guest from "./pages/Guest";
-import WaitingRoom from "./pages/Game/WaitingRoom";
+// import WaitingRoom from "./pages/Game/WaitingRoom";
 import TeamWaitingRoom from "./pages/Game/TeamWaitingRoom";
 import Setting from "./pages/Game/Setting";
 import Scoreboard from "./pages/Game/Scoreboard";
@@ -39,7 +39,7 @@ export default function App() {
             {/* Guest Layout */}
             <Route path="/" element={<Guest />} />
             <Route path="/team-waiting-room/:tableId" element={<TeamWaitingRoom />} />
-            <Route path="/waiting-room/:tableId" element={<WaitingRoom />} />
+            {/* <Route path="/waiting-room/:tableId" element={<WaitingRoom />} /> */}
             <Route path="/setting" element={<Setting />} />
             <Route path="/Scoreboard" element={<Scoreboard />} />
 
