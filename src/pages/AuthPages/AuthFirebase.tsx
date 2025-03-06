@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import GridShape from "../../components/common/GridShape";
-import GoogleLogin from "../../api/Auth/GoogleLogin";
+// import GoogleLogin from "../../api/Auth/GoogleLogin";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import axiosInstance from "../../api/axiosInstance";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -115,7 +118,18 @@ function Login() {
             </div>
           </form>
 
-          <GoogleLogin />
+          {/* <GoogleLogin /> */}
+          
+
+<GoogleLogin
+  onSuccess={credentialResponse => {
+    const decoded = jwtDecode(credentialResponse?.credential as string);
+    console.log(decoded);
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/>;
         </div>
       </div>
       <div className="relative items-center justify-center flex-1 hidden p-6 z-1 bg-brand-950 dark:bg-white/5 lg:flex">
