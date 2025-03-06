@@ -6,9 +6,8 @@ import axiosInstance from "../../api/axiosInstance";
  */
 export const handleGoogleLogin = async () => {
   try {
-    const response = await axiosInstance.get(`/auth/google`);
-    const responseData = response.data as { data: { user: { _id: string; email: string }; access_token: string } }; // Add type assertion
-    console.log("Login successful:", responseData);
+    const response = window.location.href = "https://swd392sp25.com:8000/api/v1/auth/google";
+    
     toast.success("Login successful", {
       position: "top-center",
     });
