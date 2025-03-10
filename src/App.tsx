@@ -13,7 +13,7 @@ import Users from "./pages/Users/Users";
 import Members from "./pages/Users/Members";
 
 import Guest from "./pages/Guest";
-// import WaitingRoom from "./pages/Game/WaitingRoom";
+import WaitingRoom from "./pages/Game/WaitingRoom";
 import TeamWaitingRoom from "./pages/Game/TeamWaitingRoom";
 import Setting from "./pages/Game/Setting";
 import Scoreboard from "./pages/Game/Scoreboard";
@@ -35,11 +35,11 @@ export default function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={<GuestLayout />}>
+          {/* <Route element={<GuestLayout />}> */}
             {/* Guest Layout */}
             <Route path="/" element={<Guest />} />
             <Route path="/team-waiting-room/:tableId" element={<TeamWaitingRoom />} />
-            {/* <Route path="/waiting-room/:tableId" element={<WaitingRoom />} /> */}
+            <Route path="/waiting-room/:tableId" element={<WaitingRoom />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/Scoreboard" element={<Scoreboard />} />
 
@@ -47,7 +47,7 @@ export default function App() {
             <Route path="/scanner-qr" element={<ScannerQR />} />
 
             <Route path="/create-match" element={<CreateMatchForm />} />
-          </Route>
+          {/* </Route> */}
 
           {/* Auth Layout */}
           <Route element={<AuthLayout />}>
@@ -77,10 +77,6 @@ export default function App() {
             <Route path="/tables" element={<BasicTables />} />
             <Route path="/users/profile" element={<UserProfiles />} />
             <Route path="/matches" element={<MatchHistory />} />
-
-            <Route path="/stores" element={<Stores />} />
-            <Route path="/create-store" element={<CreateStore />} />
-            <Route path="/table-store/:storeId" element={<TableStore />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

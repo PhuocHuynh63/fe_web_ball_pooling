@@ -7,7 +7,7 @@ import PageMeta from "../../components/common/PageMeta";
 import Modal from "./Modal";
 import UsernameModal from "./UsernameModal";
 import CreateTableModal from "./CreateTableModal";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 interface BilliardTable {
   id: number;
@@ -31,6 +31,62 @@ const BasicTables: React.FC = () => {
   const [isCreateTableModalOpen, setIsCreateTableModalOpen] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
 
+//---------------Fetch table-------------------------------
+  useEffect(() => {
+    if (storeId) {
+      axiosInstance.get(`/api/stores/${storeId}/tables`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }).then((response) => {
+        setTables(response.data as BilliardTable[]);
+      });
+    }
+  }, [storeId]);
+//---------------Create table-------------------------------
+  const handleCreateTable = (tableData: { qrCode: string; status: string; tableType: { type_name: string; compatible_mode: string[] } }) => {
+    const token = localStorage.getItem("token");
+    if (token && storeId) {
+      axiosInstance.post(`/pooltables`, { headers: { Authorization: `Bearer ${token}` } }).then((response) => {
+        setTables([...tables, response.data as BilliardTable]);
+        setIsCreateTableModalOpen(false);
+      });
+    }
+  };
+
+
+//---------------Username Save-------------------------------
+  const handleUsernameSave = (username: string) => {
+    setUsername(username);
+    localStorage.setItem("username", username);
+    setIsUsernameModalOpen(false);
+    setIsModalOpen(true);
+  };
+
+//-------------Modal solo & team---------------------------------
+  const handleTableClick = (tableId: number) => {
+    setSelectedTableId(tableId);
+    if (!username) {
+      setIsUsernameModalOpen(true);
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+  const handleTeamClick = () => {
+    if (selectedTableId !== null) {
+      navigate(`/team-waiting-room/${selectedTableId}`);
+    }
+    handleCloseModal();
+  };
+
+  const handleSoloClick = () => {
+    if (selectedTableId !== null) {
+      navigate(`/waiting-room/${selectedTableId}`);
+    }
+    handleCloseModal();
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedTableId(null);
+  };
+//-----------------StorageChange-----------------------------
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
@@ -55,60 +111,7 @@ const BasicTables: React.FC = () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
-
-  useEffect(() => {
-    if (storeId) {
-      axios.get(`/api/stores/${storeId}/tables`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }).then((response) => {
-        setTables(response.data as BilliardTable[]);
-      });
-    }
-  }, [storeId]);
-
-  const handleTableClick = (tableId: number) => {
-    setSelectedTableId(tableId);
-    if (!username) {
-      setIsUsernameModalOpen(true);
-    } else {
-      setIsModalOpen(true);
-    }
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedTableId(null);
-  };
-
-  const handleUsernameSave = (username: string) => {
-    setUsername(username);
-    localStorage.setItem("username", username);
-    setIsUsernameModalOpen(false);
-    setIsModalOpen(true);
-  };
-
-  const handleTeamClick = () => {
-    if (selectedTableId !== null) {
-      navigate(`/team-waiting-room/${selectedTableId}`);
-    }
-    handleCloseModal();
-  };
-
-  const handleSoloClick = () => {
-    if (selectedTableId !== null) {
-      navigate(`/waiting-room/${selectedTableId}`);
-    }
-    handleCloseModal();
-  };
-
-  const handleCreateTable = (tableData: { qrCode: string; status: string; tableType: { type_name: string; compatible_mode: string[] } }) => {
-    const token = localStorage.getItem("token");
-    if (token && storeId) {
-      axios.post(`/api/stores/${storeId}/tables`, { ...tableData, store: storeId }, { headers: { Authorization: `Bearer ${token}` } }).then((response) => {
-        setTables([...tables, response.data as BilliardTable]);
-        setIsCreateTableModalOpen(false);
-      });
-    }
-  };
-
+//====================================================================
   return (
     <>
       <PageMeta

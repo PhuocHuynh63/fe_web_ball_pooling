@@ -13,9 +13,10 @@ interface User {
   password: string;
   role: string;
   status: string;
+  avatar?: string; // Add the avatar field
 }
 
-export default function MemberTable() {
+export default function UserTable() {
   const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,7 +28,9 @@ export default function MemberTable() {
       try {
         const response = await axiosInstance.get("users/find");
         const data = response.data as { data: User[] };
-        setUsers(data.data.filter(user => user.role === "user")); // Filter users with role "user"
+        const activeUsers = data.data.filter(user => (user.role === "manager" || user.role === "admin") && user.status === "active");
+        console.log("Active Users:", activeUsers); // Log active users to verify filtering
+        setUsers(activeUsers); // Filter users with role "manager" or "admin" and status "active"
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -59,8 +62,8 @@ export default function MemberTable() {
 
   const handleDelete = async (id: string) => {
     try {
-      await axiosInstance.delete(`/users/${id}`);
-      console.log(`User with ID: ${id} deleted`);
+      const response = await axiosInstance.delete(`/users/${id}`);
+      console.log(`User with ID: ${id} deleted`, response);
       setUsers(users.filter(user => user._id !== id));
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -71,7 +74,7 @@ export default function MemberTable() {
     switch (role) {
       case "admin":
         return "bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-300";
-      case "staff":
+      case "manager":
         return "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300";
       default:
         return "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300";
@@ -111,7 +114,7 @@ export default function MemberTable() {
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-50 dark:bg-gray-700 border-y border-gray-200 dark:border-gray-600">
-              <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">ID</th>
+              <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">#</th>
               <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Name</th>
               <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Phone</th>
               <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Email</th>
@@ -120,9 +123,9 @@ export default function MemberTable() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
-            {paginatedUsers.map((user) => (
+            {paginatedUsers.map((user, index) => (
               <tr key={user._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{user._id}</td>
+                <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{startIndex + index + 1}</td>
                 <td className="py-4 px-5 text-lg text-gray-900 dark:text-gray-200 font-medium">{user.name}</td>
                 <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{user.phone}</td>
                 <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{user.email}</td>

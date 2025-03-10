@@ -3,12 +3,13 @@ import { ArrowLeft } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 
 interface MatchData {
-  players: string;
-  result: string;
-  score: string;
-  mode: string;
-  date: string;
-  isTeam?: boolean;
+  _id: string;
+  status: string;
+  mode_game: string;
+  pooltable: string;
+  endAt: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function MatchHistory() {
@@ -18,10 +19,10 @@ export default function MatchHistory() {
     const fetchMatches = async () => {
       try {
         const token = localStorage.getItem("authToken");
-        const response = await axiosInstance.get<MatchData[]>("/matches", {
+        const response = await axiosInstance.get<{ data: MatchData[] }>("/matches", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setMatches(response.data);
+        setMatches(response.data.data);
       } catch (error) {
         console.error("Error fetching matches:", error);
       }
@@ -29,33 +30,6 @@ export default function MatchHistory() {
 
     fetchMatches();
   }, []);
-
-  const recentMatches: MatchData[] = [
-    {
-      players: "Player A\nPlayer B",
-      result: "1\n0",
-      score: "61\n12",
-      mode: "Bida 15",
-      date: "Feb 6, 2025",
-    },
-    {
-      players: "Team A\nTeam B",
-      result: "1\n0",
-      score: "61\n12",
-      mode: "Bida 15",
-      date: "Feb 6, 2025",
-      isTeam: true,
-    },
-    {
-      players: "Player A\nPlayer B",
-      result: "1\n0",
-      score: "-",
-      mode: "Bida 8",
-      date: "Feb 6, 2025",
-    },
-  ];
-
-  const allMatches = [...recentMatches, ...matches];
 
   return (
     <div className="min-h-screen bg-black bg-opacity-80 text-white">
@@ -80,43 +54,26 @@ export default function MatchHistory() {
 
           {/* Table Header */}
           <div className="grid grid-cols-5 text-lg font-medium py-2 px-3 border-b border-gray-700">
-            <div>Players</div>
-            <div className="text-center">Result</div>
-            <div className="text-center">Score</div>
-            <div className="text-center">Mode game</div>
-            <div className="text-center">Date</div>
+            <div>Mode Game</div>
+            <div className="text-center">Pool Table</div>
+            <div className="text-center">Status</div>
+            <div className="text-center">End At</div>
+            <div className="text-center">Created At</div>
           </div>
 
           {/* Match Rows */}
-          {allMatches.map((match, index) => (
+          {matches.map((match, index) => (
             <div
-              key={index}
+              key={match._id}
               className={`grid grid-cols-5 text-lg py-2 px-3 ${
-                index < allMatches.length - 1 ? "border-b border-gray-700" : ""
+                index < matches.length - 1 ? "border-b border-gray-700" : ""
               }`}
             >
-              <div className="whitespace-pre-line">
-                {match.players.split("\n")[0]}
-                <br />
-                {match.players.split("\n")[1]}
-                {match.isTeam && (
-                  <span className="inline-block ml-2 align-middle">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M19 9L12 16L5 9"
-                        stroke="white"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                )}
-              </div>
-              <div className="text-center whitespace-pre-line">{match.result}</div>
-              <div className="text-center whitespace-pre-line">{match.score}</div>
-              <div className="text-center">{match.mode}</div>
-              <div className="text-center">{match.date}</div>
+              <div className="text-center">{match.mode_game}</div>
+              <div className="text-center">{match.pooltable}</div>
+              <div className="text-center">{match.status}</div>
+              <div className="text-center">{new Date(match.endAt).toLocaleString()}</div>
+              <div className="text-center">{new Date(match.createdAt).toLocaleString()}</div>
             </div>
           ))}
         </div>

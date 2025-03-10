@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
@@ -8,26 +8,29 @@ import axiosInstance from "../../api/axiosInstance";
 interface User {
   _id: string;
   name: string;
-  email: string;
   phone: string;
+  email: string;
+  password: string;
   role: string;
+  status: string;
+  avatar?: string; // Add the avatar field
 }
 
-const UserTable: React.FC = () => {
-  const [users, setUsers] = React.useState<User[]>([]);
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [currentPage, setCurrentPage] = React.useState(1);
+export default function UserTable() {
+  const [users, setUsers] = useState<User[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const token = localStorage.getItem("authToken");
-        const response = await axiosInstance.get<User[]>("/users", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUsers(response.data);
+        const response = await axiosInstance.get("users/find");
+        const data = response.data as { data: User[] };
+        const activeUsers = data.data.filter(user => (user.role === "manager" || user.role === "admin") && user.status === "active");
+        console.log("Active Users:", activeUsers); // Log active users to verify filtering
+        setUsers(activeUsers); // Filter users with role "manager" or "admin" and status "active"
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -47,14 +50,20 @@ const UserTable: React.FC = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleViewUser = (userId: string) => {
-    navigate(`/users/profile?userId=${userId}`);
+  const handleView = async (id: string) => {
+    try {
+      const response = await axiosInstance.get(`/users/${id}`);
+      console.log("User Profile:", response.data);
+      navigate(`/profile/${id}`);
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
   };
 
   const handleDelete = async (id: string) => {
     try {
-      await axiosInstance.delete(`/users/${id}`);
-      console.log(`User with ID: ${id} deleted`);
+      const response = await axiosInstance.delete(`/users/${id}`);
+      console.log(`User with ID: ${id} deleted`, response);
       setUsers(users.filter(user => user._id !== id));
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -65,7 +74,7 @@ const UserTable: React.FC = () => {
     switch (role) {
       case "admin":
         return "bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-300";
-      case "staff":
+      case "manager":
         return "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300";
       default:
         return "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300";
@@ -105,7 +114,7 @@ const UserTable: React.FC = () => {
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-50 dark:bg-gray-700 border-y border-gray-200 dark:border-gray-600">
-              <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">ID</th>
+              <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">#</th>
               <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Name</th>
               <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Phone</th>
               <th className="text-left py-4 px-5 text-lg font-semibold text-gray-900 dark:text-gray-200">Email</th>
@@ -114,9 +123,9 @@ const UserTable: React.FC = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
-            {paginatedUsers.map((user) => (
+            {paginatedUsers.map((user, index) => (
               <tr key={user._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{user._id}</td>
+                <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{startIndex + index + 1}</td>
                 <td className="py-4 px-5 text-lg text-gray-900 dark:text-gray-200 font-medium">{user.name}</td>
                 <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{user.phone}</td>
                 <td className="py-4 px-5 text-lg text-gray-600 dark:text-gray-300">{user.email}</td>
@@ -129,7 +138,7 @@ const UserTable: React.FC = () => {
                 </td>
                 <td className="py-4 px-5 text-right space-x-2">
                   <button
-                    onClick={() => handleViewUser(user._id)}
+                    onClick={() => handleView(user._id)}
                     className="px-4 py-2 text-lg text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900 rounded-md transition-colors"
                   >
                     View
@@ -206,7 +215,5 @@ const UserTable: React.FC = () => {
       )}
     </div>
   );
-};
-
-export default UserTable;
+}
 

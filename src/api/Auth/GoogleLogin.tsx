@@ -5,8 +5,9 @@ import axiosInstance from "../../api/axiosInstance";
  * @returns A function that initiates the Google login process
  */
 export const handleGoogleLogin = async () => {
+  
   try {
-    const response = window.location.href = "https://swd392sp25.com:8000/api/v1/auth/google";
+    window.location.href = "https://swd392sp25.com:8000/api/v1/auth/google";
     
     toast.success("Login successful", {
       position: "top-center",
