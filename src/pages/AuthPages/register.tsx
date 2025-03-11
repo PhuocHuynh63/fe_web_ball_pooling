@@ -5,21 +5,25 @@ import axiosInstance from "../../api/axiosInstance";
 
 export function Register() {
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [role, setRole] = useState("");
   const navigate = useNavigate();
+
+  // Set default values for role and status
+  const role = "manager";
+  const status = "unassigned";
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = {
       email,
-      username,
+      name,
       password,
       phone,
       role,
+      status,
     };
 
     try {
@@ -28,7 +32,7 @@ export function Register() {
       toast.success("Registration successful", {
         position: "top-center",
       });
-      navigate("/auth"); // Redirect to login page after successful registration
+      navigate("/users"); // Redirect to login page after successful registration
     } catch (error) {
       console.error("Registration error:", error);
       toast.error("Registration failed", {
@@ -42,7 +46,7 @@ export function Register() {
       <div className="flex flex-col flex-1 p-4 rounded-2xl sm:rounded-none sm:border-0 sm:p-6">
         <div className="w-full max-w-md pt-5 mx-auto sm:py-8">
           <Link
-            to="/auth"
+            to="/users"
             className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
           >
             <svg
@@ -61,20 +65,20 @@ export function Register() {
                 strokeLinejoin="round"
               />
             </svg>
-            Back to Sign In
+            Back to list User
           </Link>
         </div>
         <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto p-2">
           <form onSubmit={handleRegister} className="space-y-3">
             <div className="mb-3 p-2">
               <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                Username<span className="text-error-500">*</span>
+                Name<span className="text-error-500">*</span>
               </label>
               <input
                 type="text"
                 className="w-full px-2 py-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Name"
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
@@ -116,21 +120,6 @@ export function Register() {
                 onChange={(e) => setPhone(e.target.value)}
                 required
               />
-            </div>
-
-            <div className="mb-3 p-2">
-              <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                Role<span className="text-error-500">*</span>
-              </label>
-              <select
-                className="w-full px-2 py-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500"
-                onChange={(e) => setRole(e.target.value)}
-                required
-              >
-                <option value="">Select role</option>
-                <option value="user">User</option>
-                <option value="manager">Manager</option>
-              </select>
             </div>
 
             <div className="d-grid">

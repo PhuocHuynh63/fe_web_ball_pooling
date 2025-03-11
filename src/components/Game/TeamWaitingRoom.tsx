@@ -38,7 +38,7 @@ export default function TeamWaiting() {
     },
   ]);
 
-  const handleAddPlayer = (bidaTableId: string) => {
+  const handleQRcode = (bidaTableId: string) => {
     localStorage.setItem("bidaTableId", bidaTableId);
     navigate("/qrCode");
   };
@@ -99,7 +99,7 @@ export default function TeamWaiting() {
           {/* Invite button */}
           <button
             className="mt-4 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-800"
-            onClick={() => tableId && handleAddPlayer(tableId)}
+            onClick={() => tableId && handleQRcode(tableId)}
           >
             Invite player
           </button>

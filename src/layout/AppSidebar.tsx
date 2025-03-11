@@ -2,17 +2,10 @@ import React, { useEffect, useCallback, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
 import {
-  BoxCubeIcon,
-  CalenderIcon,
   ChevronDownIcon,
   GridIcon,
   GroupIcon,
   HorizontaLDots,
-  ListIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  TableIcon,
   UserCircleIcon,
   UserIcon,
 } from "../icons";
@@ -37,12 +30,6 @@ const navItems: NavItem[] = [
     icon: <UserCircleIcon />,
     name: "User Profile",
     path: "/users/profile",
-  },
-
-  {
-    name: "Tables",
-    icon: <TableIcon />,
-    path: "/tables",
   },
   {
     name: "Users",

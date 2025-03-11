@@ -28,7 +28,7 @@ export default function UserTable() {
       try {
         const response = await axiosInstance.get("users/find");
         const data = response.data as { data: User[] };
-        const activeUsers = data.data.filter(user => (user.role === "manager" || user.role === "admin") && user.status === "active");
+        const activeUsers = data.data.filter(user => user.role === "user" && user.status === "active");
         console.log("Active Users:", activeUsers); // Log active users to verify filtering
         setUsers(activeUsers); // Filter users with role "manager" or "admin" and status "active"
       } catch (error) {

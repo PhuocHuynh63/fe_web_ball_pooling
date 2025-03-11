@@ -5,9 +5,8 @@ import ComponentCard from "../../components/common/ComponentCard";
 import BasicTableOne from "../../components/tables/BasicTableOne";
 import PageMeta from "../../components/common/PageMeta";
 import Modal from "./Modal";
-import UsernameModal from "./UsernameModal";
 import CreateTableModal from "./CreateTableModal";
-import axios from "axios";
+import TableInfoModal from "./TableInfoModal";
 
 interface BilliardTable {
   id: number;
@@ -19,104 +18,28 @@ interface BilliardTable {
   }[];
   gameType: string;
   duration: string;
+  type_name: string;
 }
 
 const TableStore: React.FC = () => {
   const { storeId } = useParams<{ storeId: string }>();
   const navigate = useNavigate();
-  const [tables, setTables] = useState<BilliardTable[]>([
-    {
-      id: 1,
-      tableNumber: "Table 1",
-      status: "available",
-      players: [
-        { image: "player1.jpg", name: "Player 1" },
-        { image: "player2.jpg", name: "Player 2" },
-      ],
-      gameType: "8-ball",
-      duration: "30 mins",
-    },
-    {
-      id: 2,
-      tableNumber: "Table 2",
-      status: "occupied",
-      players: [
-        { image: "player3.jpg", name: "Player 3" },
-        { image: "player4.jpg", name: "Player 4" },
-      ],
-      gameType: "9-ball",
-      duration: "45 mins",
-    },
-    {
-      id: 3,
-      tableNumber: "Table 3",
-      status: "available",
-      players: [],
-      gameType: "8-ball",
-      duration: "60 mins",
-    },
-  ]);
+  const [tables, setTables] = useState<BilliardTable[]>([]);
   const [selectedTableId, setSelectedTableId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
   const [isCreateTableModalOpen, setIsCreateTableModalOpen] = useState(false);
-  const [username, setUsername] = useState<string | null>(null);
+  const [isTableInfoModalOpen, setIsTableInfoModalOpen] = useState(false);
+  const [newTableData, setNewTableData] = useState<any>(null);
 
-  useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    } else {
-      setIsUsernameModalOpen(true);
-    }
-
-    const handleStorageChange = () => {
-      const updatedUsername = localStorage.getItem("username");
-      if (updatedUsername) {
-        setUsername(updatedUsername);
-      } else {
-        setUsername(null);
-        setIsUsernameModalOpen(true);
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
-
-  // Comment out the useEffect hook to disable fetching tables from the API
-  /*
-  useEffect(() => {
-    if (storeId) {
-      axios.get(`/api/stores/${storeId}/tables`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }).then((response) => {
-        setTables(response.data as BilliardTable[]);
-      });
-    }
-  }, [storeId]);
-  */
 
   const handleTableClick = (tableId: number) => {
     setSelectedTableId(tableId);
-    if (!username) {
-      setIsUsernameModalOpen(true);
-    } else {
-      setIsModalOpen(true);
-    }
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedTableId(null);
-  };
-
-  const handleUsernameSave = (username: string) => {
-    setUsername(username);
-    localStorage.setItem("username", username);
-    setIsUsernameModalOpen(false);
-    setIsModalOpen(true);
   };
 
   const handleTeamClick = () => {
@@ -133,15 +56,19 @@ const TableStore: React.FC = () => {
     handleCloseModal();
   };
 
-  const handleCreateTable = (tableData: { qrCode: string; status: string; tableType: { type_name: string; compatible_mode: string[] } }) => {
-    const token = localStorage.getItem("token");
-    if (token && storeId) {
-      axios.post(`/api/stores/${storeId}/tables`, { ...tableData, store: storeId }, { headers: { Authorization: `Bearer ${token}` } }).then((response) => {
-        setTables([...tables, response.data as BilliardTable]);
-        setIsCreateTableModalOpen(false);
-      });
-    }
+  const handleSaveTable = (tableData: any) => {
+    setTables([...tables, tableData as BilliardTable]);
+    setNewTableData(tableData);
+    setIsTableInfoModalOpen(true);
   };
+
+  // Filter and map tables to only display specific fields
+  const filteredTables = tables
+    .filter(table => table.status === "available" && ["8-ball", "9-ball"].includes(table.gameType) && table.type_name === "Standard")
+    .map((table, index) => ({
+      ...table,
+      tableNumber: `Table ${index + 1}`
+    }));
 
   return (
     <>
@@ -158,18 +85,18 @@ const TableStore: React.FC = () => {
           Create
         </button>
         <ComponentCard title="Basic Table 1">
-          <BasicTableOne tables={tables} onTableClick={handleTableClick} />
+          <BasicTableOne tables={filteredTables} onTableClick={handleTableClick} />
         </ComponentCard>
       </div>
-      <UsernameModal
-        isOpen={isUsernameModalOpen}
-        onClose={() => setIsUsernameModalOpen(false)}
-        onSave={handleUsernameSave}
-      />
       <CreateTableModal
         isOpen={isCreateTableModalOpen}
         onClose={() => setIsCreateTableModalOpen(false)}
-        onSave={handleCreateTable}
+        onSave={handleSaveTable}
+      />
+      <TableInfoModal
+        isOpen={isTableInfoModalOpen}
+        onClose={() => setIsTableInfoModalOpen(false)}
+        tableData={newTableData}
       />
       <Modal
         isOpen={isModalOpen}

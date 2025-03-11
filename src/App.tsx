@@ -1,13 +1,13 @@
 import { Route, BrowserRouter, Routes } from "react-router";
 import AppLayout from "./layout/AppLayout";
 import AuthLayout from "./layout/AuthLayout";
-import GuestLayout from "./layout/GuestLayout";
+// import GuestLayout from "./layout/GuestLayout";
 import SignIn from "./pages/AuthPages/AuthFirebase";
 import Register from "./pages/AuthPages/register";
 import NotFound from "./pages/OtherPage/NotFound";
 
-import Dashboard from "./pages/Dashboard/ECommerce";
-import BasicTables from "./pages/Tables/BasicTables";
+import Dashboard from "./pages/Dashboard/Dashboard";
+// import BasicTables from "./pages/Tables/BasicTables";
 import UserProfiles from "./pages/Users/UserProfiles";
 import Users from "./pages/Users/Users";
 import Members from "./pages/Users/Members";
@@ -52,7 +52,7 @@ export default function App() {
           {/* Auth Layout */}
           <Route element={<AuthLayout />}>
             <Route path="/auth" element={<SignIn />} />
-            <Route path="/auth/register" element={<Register />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/auth/redirect" element={<RoleBasedRedirect />} />
           </Route>
 
@@ -61,7 +61,7 @@ export default function App() {
             <Route index path="/admin" element={<Dashboard />} />
             <Route path="/users" element={<Users />} />
             <Route path="/members" element={<Members />} />
-            <Route path="/tables" element={<BasicTables />} />
+            {/* <Route path="/tables" element={<BasicTables />} /> */}
             <Route path="/users/profile" element={<UserProfiles />} />
             <Route path="/matches" element={<MatchHistory />} />
 
@@ -74,7 +74,7 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route index path="/manager" element={<Users />} />
             <Route path="/members" element={<Members />} />
-            <Route path="/tables" element={<BasicTables />} />
+            {/* <Route path="/tables" element={<BasicTables />} /> */}
             <Route path="/users/profile" element={<UserProfiles />} />
             <Route path="/matches" element={<MatchHistory />} />
           </Route>

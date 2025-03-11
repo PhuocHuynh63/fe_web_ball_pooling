@@ -1,10 +1,10 @@
 import React from "react";
-import BasicTables from "./Tables/BasicTables";
+import Login from "./AuthPages/AuthFirebase";
 
 const Guest: React.FC = () => {
   return (
     <div>
-      <BasicTables />
+      <Login />
     </div>
   );
 };

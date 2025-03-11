@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Search, ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Search, ChevronLeft, ChevronRight, Plus, X } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 
 interface User {
@@ -22,6 +22,9 @@ export default function UserTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const navigate = useNavigate();
+  const location = useLocation();
+  const [managersWithoutStore, setManagersWithoutStore] = useState<User[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -38,6 +41,19 @@ export default function UserTable() {
 
     fetchUsers();
   }, []);
+
+  const fetchManagersWithoutStore = async () => {
+    try {
+      const response = await axiosInstance.get("stores?action=findManagersWithoutStore");
+      const data = response.data as { data: User[] };
+      const managersWithoutStore = data.data.filter(user => user.role === "manager" && user.status === "active");
+      console.log("Managers Without Store:", managersWithoutStore);
+      setManagersWithoutStore(managersWithoutStore);
+      setIsModalOpen(true); // Open the modal
+    } catch (error) {
+      console.error("Error fetching managers without store:", error);
+    }
+  };
 
   const filteredUsers = Array.isArray(users) ? users.filter(
     (user) =>
@@ -105,6 +121,12 @@ export default function UserTable() {
           >
             <Plus className="h-5 w-5" />
             <span>New User</span>
+          </button>
+          <button
+            onClick={fetchManagersWithoutStore}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          >
+            <span>Find Managers Without Store</span>
           </button>
         </div>
       </div>
@@ -213,7 +235,39 @@ export default function UserTable() {
           </div>
         </div>
       )}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Managers Without Store</h2>
+              <button onClick={() => setIsModalOpen(false)}>
+                <X className="w-6 h-6 text-gray-600 hover:text-red-500" />
+              </button>
+            </div>
+            {managersWithoutStore.length > 0 ? (
+              <ul>
+                {managersWithoutStore.map((manager) => (
+                  <li key={manager._id} className="border p-3 rounded-lg shadow-sm">
+                    <p><strong>Name:</strong> {manager.name}</p>
+                    <p><strong>Email:</strong> {manager.email}</p>
+                    <p><strong>Manager ID:</strong> {manager._id}</p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No managers found.</p>
+            )}
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
